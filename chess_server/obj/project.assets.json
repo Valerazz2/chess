@@ -1,0 +1,118 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "EnumUtils/2.0.19031.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/EnumUtils.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/EnumUtils.dll": {}
+        }
+      },
+      "chess_shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "EnumUtils": "2.0.19031.1"
+        },
+        "compile": {
+          "bin/placeholder/chess_shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/chess_shared.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EnumUtils/2.0.19031.1": {
+      "sha512": "Wg6/FXcP7Qqb8V8HcH8UOIr3tmBfjtu1TTsjcXTg3vR8jxMzUMaw1bf6GaZ9DbtisL+kMDCpbI1f4YIXpGcDsA==",
+      "type": "package",
+      "path": "enumutils/2.0.19031.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "enumutils.2.0.19031.1.nupkg.sha512",
+        "enumutils.nuspec",
+        "lib/net40/EnumUtils.dll",
+        "lib/net45/EnumUtils.dll",
+        "lib/netstandard1.0/EnumUtils.dll",
+        "lib/netstandard2.0/EnumUtils.dll"
+      ]
+    },
+    "chess_shared/1.0.0": {
+      "type": "project",
+      "path": "../chess_shared/chess_shared.csproj",
+      "msbuildProject": "../chess_shared/chess_shared.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "chess_shared >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\valeraz\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\val\\chess\\chess_server\\chess_server.csproj",
+      "projectName": "chess_server",
+      "projectPath": "D:\\val\\chess\\chess_server\\chess_server.csproj",
+      "packagesPath": "C:\\Users\\valeraz\\.nuget\\packages\\",
+      "outputPath": "D:\\val\\chess\\chess_server\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\valeraz\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "D:\\val\\chess\\chess_shared\\chess_shared.csproj": {
+              "projectPath": "D:\\val\\chess\\chess_shared\\chess_shared.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Users\\valeraz\\.dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

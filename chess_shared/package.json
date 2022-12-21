@@ -1,0 +1,14 @@
+{
+    "name": "chess_shared",
+    "version": "0.1.0",
+    "displayName": "chess_shared",
+    "description": "chess_shared",
+    "unity": "2022.1",
+    "keywords": [
+        "chess_shared"
+    ],
+    "author": {
+        "name": "valera",
+        "email": "valeri.kozlov@gmail.com"
+    }
+}
