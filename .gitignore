@@ -1,2 +1,7 @@
 
 *.cache
+chess_server/bin/
+chess_server/bin/Debug
+chess_server/bin/Debug/net6.0/chess_server.runtimeconfig.json
+chess_server/obj/Debug/net6.0/refint/chess_server.dll
+chess_server/obj/Debug/net6.0/ref/chess_server.dll
