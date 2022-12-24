@@ -10,4 +10,17 @@
       <ProjectReference Include="..\chess_shared\chess_shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="chess_server_test\packages.config" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="packages\NUnit.3.5.0\NOTICES.txt" />
+      <None Remove="packages\NUnit.3.5.0\LICENSE.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+    </ItemGroup>
+
 </Project>

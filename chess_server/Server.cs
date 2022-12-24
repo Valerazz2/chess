@@ -42,12 +42,12 @@ namespace Chess.Model
             }
         }
 
-        public void SelectSquare(string sid, string squareRef)
+        public void SelectSquare(SelectSquareArgs args)
         {
             ServerPlayer player;
             lock (dictionary)
             {
-                if (!dictionary.TryGetValue(sid, out player))
+                if (!dictionary.TryGetValue(args.Sid, out player))
                 {
                     throw new Exception("Player not found");
                 }
@@ -56,7 +56,7 @@ namespace Chess.Model
             var desk = player.game.Desk;
             lock (desk)
             {
-                var square = desk.GetSquareAt(new Vector2Int(squareRef[0], squareRef[1]));
+                var square = desk.GetSquareAt(new Vector2Int(args.SquareRef[0], args.SquareRef[1]));
               
                 if (desk.move == player.Color)
                 {

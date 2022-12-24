@@ -1,15 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using chess_server.Models;
-using TCom;
 
 namespace chess_server.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    private Wind wind = Wind.North;
 
     public HomeController(ILogger<HomeController> logger)
     {

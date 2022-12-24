@@ -4,6 +4,6 @@
     {
         JoinResult Join();
 
-        void SelectSquare(string sid, string squareRef);
+        void SelectSquare(SelectSquareArgs? args);
     }
 }

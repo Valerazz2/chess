@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SquareView : AbstractView<Square>
 {
+    Wind
     [SerializeField] private SpriteRenderer SpriteRenderer;
     [SerializeField] private Sprite blackSquare;
     [SerializeField] private Sprite whiteSquare;
