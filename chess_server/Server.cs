@@ -7,7 +7,7 @@ namespace Chess.Model
 {
     public class Server : IChessService
     {
-        private Dictionary<string, ServerPlayer> dictionary = new Dictionary<string, ServerPlayer>();
+        public Dictionary<string, ServerPlayer> dictionary = new Dictionary<string, ServerPlayer>();
         
         private ServerPlayer waitingPlayer;
         
@@ -56,7 +56,7 @@ namespace Chess.Model
             var desk = player.game.Desk;
             lock (desk)
             {
-                var square = desk.GetSquareAt(new Vector2Int(args.SquareRef[0], args.SquareRef[1]));
+                var square = desk.GetSquareAt(new Vector2Int(args.SquareRef[0] - '0', args.SquareRef[1] - '0'));
               
                 if (desk.move == player.Color)
                 {
