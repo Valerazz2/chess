@@ -36,6 +36,7 @@ public class DeskView : AbstractView<Desk>
     {
         if (!Input.GetMouseButtonDown(0)) return;
         var target = GetSquareByMousePos(); 
+        
         target?.Select();
     }
   

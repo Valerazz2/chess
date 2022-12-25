@@ -4,6 +4,6 @@
     {
         JoinResult Join();
 
-        void SelectSquare(SelectSquareArgs? args);
+        void SelectSquare(SelectSquareArgs args);
     }
 }
