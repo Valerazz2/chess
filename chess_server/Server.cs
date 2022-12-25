@@ -7,7 +7,21 @@ namespace Chess.Model
 {
     public class Server : IChessService
     {
-       
+        private static Server _inst;
+
+        public static Server Instance
+        {
+            get
+            {
+                if (_inst == null)
+                {
+                    _inst = new Server();
+                }
+
+                return _inst;
+            }
+        }
+
         public Dictionary<string, ServerPlayer> dictionary = new Dictionary<string, ServerPlayer>();
         
         private ServerPlayer waitingPlayer;
@@ -15,6 +29,11 @@ namespace Chess.Model
         readonly object joinLock = new object();
 
         public int GameCount => dictionary.Count / 2;
+
+        private Server()
+        {
+            
+        }
 
         public JoinResult Join()
         {

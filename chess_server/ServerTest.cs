@@ -6,7 +6,7 @@ namespace Chess.Server
 {
     public class ServerTest
     {
-        static Model.Server server = new Model.Server();
+        static Model.Server server => Model.Server.Instance;
         
         public static void Main()
         {

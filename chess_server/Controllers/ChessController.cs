@@ -10,7 +10,7 @@ public class ChessController : Controller
 {
     private readonly ILogger<ChessController> _logger;
 
-    private readonly Server server = new Server();
+    private Server server => Server.Instance;
         
 
     public ChessController(ILogger<ChessController> logger)

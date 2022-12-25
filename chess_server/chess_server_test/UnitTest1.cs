@@ -6,12 +6,11 @@ namespace chess_server_test;
 
 public class Tests
 {
-    Server server;
+    Server server => Server.Instance;
     
     [SetUp]
     public void Setup()
     {
-        server = new Server();
     }
 
     [Test]
