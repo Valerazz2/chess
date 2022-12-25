@@ -19,6 +19,7 @@ public class Tests
     [Test]
     public void SimpleJoinTest()
     {
+        Server.Clear();
         var joinW = Server.Join();
         Assert.AreEqual(ChessColor.White, joinW.Color);
         var joinB = Server.Join();
@@ -51,6 +52,7 @@ public class Tests
     [Test]
     public void MultiThreadTest()
     {
+        Server.Clear();
         var t = DateTime.Now;
         var threads = new List<Thread>();
         for (var i = 0; i < 10; i++)

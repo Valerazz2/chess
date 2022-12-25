@@ -92,5 +92,18 @@ namespace Chess.Model
 
             return result;
         }
+
+        public void Clear()
+        {
+            lock (_joinLock)
+            {
+                lock (_dictionary)
+                {
+                    _dictionary.Clear();
+                }
+            
+                _waitingPlayer = null;    
+            }
+        }
     }
 }
