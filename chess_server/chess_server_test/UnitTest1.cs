@@ -68,6 +68,6 @@ public class Tests
             thread.Join();
         }
 
-        Console.Out.WriteLine(DateTime.Now - t + ", gameCount=" + Server.GameCount);
+        Assert.AreEqual(50, Server.GameCount);
     }
 }
