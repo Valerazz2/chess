@@ -10,7 +10,7 @@ public class ChessController : Controller
 {
     private readonly ILogger<ChessController> _logger;
 
-    private Server server => Server.Instance;
+    private static Server Server => Server.Instance;
         
 
     public ChessController(ILogger<ChessController> logger)
@@ -20,7 +20,7 @@ public class ChessController : Controller
 
     public string Join()
     {
-        var result = server.Join();
+        var result = Server.Join();
         return JsonConvert.SerializeObject(result);
     }
     
@@ -29,6 +29,6 @@ public class ChessController : Controller
         var task = await Request.BodyReader.ReadAsync();
         var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
         var args = JsonConvert.DeserializeObject<SelectSquareArgs>(requestString);
-        server.SelectSquare(args);
+        if (args != null) Server.SelectSquare(args);
     }
 }
