@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace chess_server_test;
 
-public class Tests
+public class LocalServerTest
 {
     private static Server Server => Server.Instance;
     
