@@ -4,6 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,15 +14,33 @@
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="chess_server_test\packages.config" />
+      <_ContentIncludedByDefault Remove="chess_server_test\bin\Debug\net6.0\chess_server_test.deps.json" />
+      <_ContentIncludedByDefault Remove="chess_server_test\bin\Debug\net6.0\chess_server_test.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="chess_server_test\obj\chess_server_test.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="chess_server_test\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="chess_server_test\obj\project.packagespec.json" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="packages\NUnit.3.5.0\NOTICES.txt" />
       <None Remove="packages\NUnit.3.5.0\LICENSE.txt" />
+      <None Remove="chess_server_test\**" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="chess_server_test\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="chess_server_test\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="chess_server_test\**" />
     </ItemGroup>
 
 </Project>

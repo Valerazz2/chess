@@ -1,12 +1,12 @@
 using Chess.Model;
 using Chess.Server;
-//using NUnit.Framework;
+using NUnit.Framework;
 
 namespace chess_server_test;
 
 public class Tests
 {
-    /*Server server;
+    Server server;
     
     [SetUp]
     public void Setup()
@@ -36,5 +36,5 @@ public class Tests
         server.SelectSquare(squareParams);
         server.dictionary.TryGetValue(joinW.Sid, out ServerPlayer player);
         Assert.True(player.game.Desk.CurrentPiece.GetPieceType() == PieceType.Rook);
-    }*/
+    }
 }

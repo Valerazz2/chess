@@ -7,6 +7,7 @@ namespace Chess.Model
 {
     public class Server : IChessService
     {
+       
         public Dictionary<string, ServerPlayer> dictionary = new Dictionary<string, ServerPlayer>();
         
         private ServerPlayer waitingPlayer;
@@ -20,7 +21,7 @@ namespace Chess.Model
             lock (joinLock)
             {
                 var game = waitingPlayer == null ? new ChessGame() : waitingPlayer.game;
-                var color = waitingPlayer == null ? ChessColor.Black : ChessColor.White;
+                var color = waitingPlayer == null ? ChessColor.White : ChessColor.Black;
                 var player = new ServerPlayer(game, color);
                 dictionary.Add(player.ID, player);
                 if (waitingPlayer == null)
