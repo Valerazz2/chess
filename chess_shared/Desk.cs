@@ -252,6 +252,17 @@ namespace Chess.Model
             }
         }
 
+        public void Select(string squareRef)
+        {
+            var x = squareRef[0] - 'a';
+            var y = squareRef[1] - '1';
+            if (x < 0 || x > DeskSizeX - 1 || y < 0 || y > DeskSizeY - 1)
+            {
+                throw new Exception($"There is no square by ({squareRef})");
+            }
+            Select(GetSquareAt(new Vector2Int(x, y)));
+        }
+
         private void SetMoveAbleSquaresFor(Piece piece)
         {
             ResetTiles(false);

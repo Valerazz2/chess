@@ -76,11 +76,9 @@ namespace Chess.Model
             var desk = player.game.Desk;
             lock (desk)
             {
-                var square = desk.GetSquareAt(new Vector2Int(args.SquareRef[0] - '0', args.SquareRef[1] - '0'));
-              
                 if (desk.move == player.Color)
                 {
-                    desk.Select(square);
+                    desk.Select(args.SquareRef);
                 }
             }
         }

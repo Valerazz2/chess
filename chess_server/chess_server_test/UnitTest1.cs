@@ -30,7 +30,7 @@ public class Tests
         var squareParams = new SelectSquareArgs
         {
             Sid = joinW.Sid,
-            SquareRef = "00"
+            SquareRef = "a1"
         };
         server.SelectSquare(squareParams);
         server.dictionary.TryGetValue(joinW.Sid, out ServerPlayer player);
