@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Chess.Model;
 using Chess.Server;
+using Net;
 using NUnit.Framework;
 
 namespace chess_server_test;
@@ -37,8 +38,27 @@ public class LocalServerTest
             SquareRef = "a1"
         };
         Server.SelectSquare(squareParams);
-        var player = Server.GetPlayer(joinW.Sid);
-        Assert.True(player.game.Desk.CurrentPiece.GetPieceType() == PieceType.Rook);
+        var playerWhite = Server.GetPlayer(joinW.Sid);
+        Assert.True(playerWhite != null);
+        Assert.True(playerWhite.game.Desk.CurrentPiece.GetPieceType() == PieceType.Rook);
+        
+        Server.SelectSquare(new SelectSquareArgs()
+        {
+            Sid = joinW.Sid,
+            SquareRef = "e2"
+        });
+        Assert.True(playerWhite.game.Desk.CurrentPiece.GetPieceType() == PieceType.Pawn);
+        var playerBlack = Server.GetPlayer(joinB.Sid);
+        Assert.True(playerBlack != null);
+        Assert.True(playerBlack.NewsForClient.Count == 0);
+        Server.SelectSquare(new SelectSquareArgs
+        {
+            Sid = joinW.Sid,
+            SquareRef = "e4"
+        });
+        Assert.True(playerBlack.NewsForClient.Count == 1);
+        Assert.True(Server.GetPlayer(joinB.Sid) != null);
+        Assert.True(Server.GameCount == 2);
     }
     
     private void TestJoin()

@@ -31,4 +31,18 @@ public class ChessController : Controller
         var args = JsonConvert.DeserializeObject<SelectSquareArgs>(requestString);
         if (args != null) Server.SelectSquare(args);
     }
+
+    public async Task<string> AskNews()
+    {
+        var task = await Request.BodyReader.ReadAsync();
+        var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
+        var args = JsonConvert.DeserializeObject<AskNewsArgs>(requestString);
+        
+        if (args == null) 
+            throw new Exception("NoArgs");
+        
+        var result = Server.AskNews(args);
+
+        return JsonConvert.SerializeObject(result);
+    }
 }

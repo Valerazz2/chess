@@ -46,14 +46,19 @@ namespace Chess.Model
         }
         
 
-        public void Select()
+        public void Select(ChessColor color)
         {
-            Desk.Select(this);
+            Desk.Select(this, color);
         }
 
         public bool IsPieceOfColor(ChessColor color)
         {
             return Piece != null && Piece.Color == color;
+        }
+
+        public string GetRef()
+        {
+            return ('a' + Pos.X).ToString() + (Pos.Y + '1');
         }
     }
 }

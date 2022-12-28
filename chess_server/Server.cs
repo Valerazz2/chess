@@ -8,7 +8,7 @@ namespace Chess.Model
 
         public static Server Instance => _inst ??= new Server();
 
-        private readonly Dictionary<string, ServerPlayer> _dictionary = new();
+        public readonly Dictionary<string, ServerPlayer> _dictionary = new();
         
         private ServerPlayer? _waitingPlayer;
         
@@ -64,11 +64,20 @@ namespace Chess.Model
             var desk = player.game.Desk;
             lock (desk)
             {
-                if (desk.move == player.Color)
-                {
-                    desk.Select(args.SquareRef);
-                }
+                desk.Select(args.SquareRef, player.Color);
             }
+        }
+
+        public AskNewsResult AskNews(AskNewsArgs args)
+        {
+            var player = GetPlayer(args.PlayerSid);
+            
+            var result = new AskNewsResult()
+            {
+                News = new List<News>(player.NewsForClient)
+            };
+            player.NewsForClient.Clear();
+            return result;
         }
 
         public ServerPlayer? FindPlayer(string sid)

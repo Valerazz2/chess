@@ -3,5 +3,6 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.Tests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.ChessHttpClientTest.SimpleJoinTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.LocalServerTest.SimpleJoinTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

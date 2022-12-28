@@ -1,6 +1,10 @@
 using System.Collections;
+using System.Threading.Tasks;
+using chess_shared.Net;
 using Chess.Model;
+using Chess.Server;
 using Chess.View;
+using Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,16 +12,18 @@ public class DeskView : AbstractView<Desk>
 {
     [SerializeField] private SquareView squareViewPrefab;
     [SerializeField] private PieceView pieceViewPrefab;
-
     private SquareView choosedSquare;
-    
-    private void Start()
+    private ChessNetClient _chessNetClient;
+
+    private async Task Start()
     {
         var desk = new Desk();
+        _chessNetClient = new ChessNetClient(desk);
         desk.CreateMap();
         Bind(desk);
-        //ChessEx chessEx = new ChessEx(desk);
-        //StartCoroutine(chessEx.a());
+        await _chessNetClient.Join();
+        GetComponent<UserInput>().UserColor = _chessNetClient.Color;
+        StartCoroutine(CheckNews());
     }
 
     protected override void OnBind()
@@ -32,28 +38,26 @@ public class DeskView : AbstractView<Desk>
     {
         CreateView(p, pieceViewPrefab);
     }
-    private void Update()
+
+    private string GetSquareRef(int x, int y)
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-        var target = GetSquareByMousePos(); 
-        
-        target?.Select();
+        return "" + (char) ('a' + x) + (char) ('1' + y);
     }
   
-    private Square GetSquareByMousePos()
-    {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var hit2D = Physics2D.Raycast(mousePos, transform.forward, 1000);
-        if (hit2D && hit2D.collider.gameObject.GetComponent<SquareView>())
-        {
-            return hit2D.transform.gameObject.GetComponent<SquareView>().model;
-        }
-        return null;
-    }
+   
 
     private IEnumerator ReloadSceneIn(int seconds)
     {
         yield return new WaitForSeconds(seconds);
         SceneManager.LoadScene("SampleScene");
+    }
+
+    private IEnumerator CheckNews()
+    {
+        while (true)
+        {
+            _chessNetClient.CheckNews();
+            yield return new WaitForSeconds(1);
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace Chess.Model
         private ChessState ChessState = ChessState.PieceNull;
 
         public event Action<MoveInfo> OnMove;
+        
+        public event Action<Square> OnSelect;
         public event Action<Piece> OnPieceAdd;
         public event Action<Piece> OnPieceRemove; 
         public event Action<Piece> OnPieceCaptured;
@@ -218,14 +220,23 @@ namespace Chess.Model
             return Squares[pos.X, pos.Y];
         }
 
+        public Square GetSquareAt(string pos)
+        {
+            return GetSquareAt(new Vector2Int(pos[0] - 'a', pos[1] - '1'));
+        }
+        
         public void SetPieceAt(Square square, Piece piece)
         {
             square.Piece = piece;
             piece.Square = square;
         }
 
-        public void Select(Square square)
+        public void Select(Square square, ChessColor color)
         {
+            if (color != move)
+            {
+                return;
+            }
             switch (ChessState)
             {
                 case ChessState.PieceNull:
@@ -250,9 +261,10 @@ namespace Chess.Model
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
+            OnSelect?.Invoke(square);
         }
 
-        public void Select(string squareRef)
+        public void Select(string squareRef, ChessColor color)
         {
             var x = squareRef[0] - 'a';
             var y = squareRef[1] - '1';
@@ -260,7 +272,7 @@ namespace Chess.Model
             {
                 throw new Exception($"There is no square by ({squareRef})");
             }
-            Select(GetSquareAt(new Vector2Int(x, y)));
+            Select(GetSquareAt(new Vector2Int(x, y)), color);
         }
 
         private void SetMoveAbleSquaresFor(Piece piece)

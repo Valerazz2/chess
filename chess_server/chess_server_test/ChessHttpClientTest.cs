@@ -21,8 +21,9 @@ public class ChessHttpClientTest
     [Test]
     public async Task SimpleJoinTest()
     {
+        Server.Clear();
         var client = new ChessHttpClient();
-        var result = await client.Join();
-        Assert.NotNull(result.Sid);
+        var whiteJoinResult = await client.Join();
+        Assert.NotNull(whiteJoinResult.Sid);
     }
 }

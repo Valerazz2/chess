@@ -4,7 +4,7 @@
     {
         public string Sid;
 
-        // "43"
+        // "e2"
         public string SquareRef;
     }
 }
