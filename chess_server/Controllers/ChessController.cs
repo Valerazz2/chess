@@ -24,7 +24,7 @@ public class ChessController : Controller
         return JsonConvert.SerializeObject(result);
     }
     
-    public async Task OnMove()
+    public async Task Move()
     {
         var task = await Request.BodyReader.ReadAsync();
         var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);

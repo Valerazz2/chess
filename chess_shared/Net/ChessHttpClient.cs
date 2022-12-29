@@ -32,7 +32,7 @@ namespace chess_shared.Net
 
         public async Task OnMove(OnMoveArgs args)
         {
-            var url = EndPoint + "OnMove";
+            var url = EndPoint + "Move";
             var argsJson = args == null ? "" : JsonConvert.SerializeObject(args);
             var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
             await _client.PostAsync(url, data);
