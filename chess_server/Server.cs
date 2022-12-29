@@ -58,13 +58,14 @@ namespace Chess.Model
             }
         }
 
-        public void SelectSquare(SelectSquareArgs args)
+        public void MovePiece(OnMoveArgs args)
         {
             var player = GetPlayer(args.Sid);
             var desk = player.game.Desk;
             lock (desk)
             {
-                desk.Select(args.SquareRef, player.Color);
+                desk.Select(args.MovedFrom, player.Color);
+                desk.Select(args.MovedTo, player.Color);
             }
         }
 

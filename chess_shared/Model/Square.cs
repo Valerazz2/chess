@@ -58,7 +58,9 @@ namespace Chess.Model
 
         public string GetRef()
         {
-            return ('a' + Pos.X).ToString() + (Pos.Y + '1');
+            var char1 = (char) ('a' + Pos.X);
+            var char2 = (char) (Pos.Y + '1');
+            return char1.ToString() + char2;
         }
     }
 }

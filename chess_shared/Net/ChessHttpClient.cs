@@ -21,7 +21,8 @@ namespace chess_shared.Net
             var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
             HttpResponseMessage response = await _client.PostAsync(url, data);
             var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<TResult>(responseJson);
+            var result = JsonConvert.DeserializeObject<TResult>(responseJson);
+            return result;
         }
 
         public async Task<JoinResult> Join()
@@ -29,9 +30,12 @@ namespace chess_shared.Net
             return await Query<JoinResult, object>(nameof(IChessService.Join), null);
         }
 
-        public async Task SelectSquare(SelectSquareArgs args)
+        public async Task OnMove(OnMoveArgs args)
         {
-            await Query<object, SelectSquareArgs>(nameof(IChessService.SelectSquare), args);
+            var url = EndPoint + "OnMove";
+            var argsJson = args == null ? "" : JsonConvert.SerializeObject(args);
+            var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
+            await _client.PostAsync(url, data);
         }
 
         public async Task<AskNewsResult> AskNews(AskNewsArgs args)

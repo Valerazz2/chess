@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Threading.Tasks;
-using chess_shared.Net;
 using Chess.Model;
-using Chess.Server;
 using Chess.View;
 using Net;
 using UnityEngine;
@@ -17,6 +15,8 @@ public class DeskView : AbstractView<Desk>
 
     private async Task Start()
     {
+        TaskScheduler.UnobservedTaskException +=
+            (_, e) => Debug.LogException(e.Exception);
         var desk = new Desk();
         _chessNetClient = new ChessNetClient(desk);
         desk.CreateMap();
@@ -43,9 +43,7 @@ public class DeskView : AbstractView<Desk>
     {
         return "" + (char) ('a' + x) + (char) ('1' + y);
     }
-  
-   
-
+    
     private IEnumerator ReloadSceneIn(int seconds)
     {
         yield return new WaitForSeconds(seconds);
@@ -56,7 +54,8 @@ public class DeskView : AbstractView<Desk>
     {
         while (true)
         {
-            _chessNetClient.CheckNews();
+            var task = _chessNetClient.CheckNews();
+            yield return new WaitUntil(() => task.IsCompleted);
             yield return new WaitForSeconds(1);
         }
     }

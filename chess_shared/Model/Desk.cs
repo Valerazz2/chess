@@ -20,8 +20,6 @@ namespace Chess.Model
         private ChessState ChessState = ChessState.PieceNull;
 
         public event Action<MoveInfo> OnMove;
-        
-        public event Action<Square> OnSelect;
         public event Action<Piece> OnPieceAdd;
         public event Action<Piece> OnPieceRemove; 
         public event Action<Piece> OnPieceCaptured;
@@ -261,7 +259,6 @@ namespace Chess.Model
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
-            OnSelect?.Invoke(square);
         }
 
         public void Select(string squareRef, ChessColor color)

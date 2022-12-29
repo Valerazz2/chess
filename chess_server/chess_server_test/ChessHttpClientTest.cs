@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using chess_shared.Net;
 using Chess.Model;
-using Chess.Server;
 using NUnit.Framework;
 
 namespace chess_server_test;

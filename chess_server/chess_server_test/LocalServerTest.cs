@@ -32,31 +32,29 @@ public class LocalServerTest
         joinB = Server.Join();
         Assert.AreEqual(ChessColor.Black, joinB.Color);
         Assert.True(Server.GameCount == 2);
-        var squareParams = new SelectSquareArgs
-        {
-            Sid = joinW.Sid,
-            SquareRef = "a1"
-        };
-        Server.SelectSquare(squareParams);
         var playerWhite = Server.GetPlayer(joinW.Sid);
-        Assert.True(playerWhite != null);
-        Assert.True(playerWhite.game.Desk.CurrentPiece.GetPieceType() == PieceType.Rook);
-        
-        Server.SelectSquare(new SelectSquareArgs()
-        {
-            Sid = joinW.Sid,
-            SquareRef = "e2"
-        });
-        Assert.True(playerWhite.game.Desk.CurrentPiece.GetPieceType() == PieceType.Pawn);
+        Assert.True(playerWhite.game.Desk.move == ChessColor.White);
         var playerBlack = Server.GetPlayer(joinB.Sid);
-        Assert.True(playerBlack != null);
         Assert.True(playerBlack.NewsForClient.Count == 0);
-        Server.SelectSquare(new SelectSquareArgs
+        Server.MovePiece(new OnMoveArgs
         {
             Sid = joinW.Sid,
-            SquareRef = "e4"
+            MovedFrom = "e2",
+            MovedTo = "e4"
         });
+        Assert.True(playerWhite.game.Desk.move == ChessColor.Black);
         Assert.True(playerBlack.NewsForClient.Count == 1);
+        var New=Server.AskNews(new AskNewsArgs
+        {
+            PlayerSid = joinB.Sid,
+        });
+        Assert.True(New.News.Count == 1);
+        EnemyFigureMoved news = (EnemyFigureMoved)New.News[0];
+        Assert.True(news != null);
+        Assert.True(news.MovedFrom == "e2");
+        Assert.True(news.MovedTo == "e4");
+        Assert.True(playerBlack.NewsForClient.Count == 0);
+        Assert.True(playerBlack.game.Desk.move == ChessColor.Black);
         Assert.True(Server.GetPlayer(joinB.Sid) != null);
         Assert.True(Server.GameCount == 2);
     }

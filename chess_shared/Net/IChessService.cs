@@ -4,7 +4,7 @@
     {
         JoinResult Join();
 
-        void SelectSquare(SelectSquareArgs args);
+        void MovePiece(OnMoveArgs args);
 
         AskNewsResult AskNews(AskNewsArgs newsArgs);
     }

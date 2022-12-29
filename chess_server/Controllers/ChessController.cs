@@ -24,12 +24,12 @@ public class ChessController : Controller
         return JsonConvert.SerializeObject(result);
     }
     
-    public async Task SelectSquare()
+    public async Task OnMove()
     {
         var task = await Request.BodyReader.ReadAsync();
         var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
-        var args = JsonConvert.DeserializeObject<SelectSquareArgs>(requestString);
-        if (args != null) Server.SelectSquare(args);
+        var args = JsonConvert.DeserializeObject<OnMoveArgs>(requestString);
+        if (args != null) Server.MovePiece(args);
     }
 
     public async Task<string> AskNews()

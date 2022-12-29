@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using chess_shared.Net;
 using Chess.Model;
 using Chess.Server;
@@ -9,7 +7,7 @@ namespace Net
 {
     public class ChessNetClient
     {
-        public Desk desk;
+        private Desk desk;
 
         public ChessHttpClient httpClient = new();
         
@@ -24,16 +22,17 @@ namespace Net
         public ChessNetClient(Desk desk)
         {
             this.desk = desk;
-            desk.OnSelect += async square =>
+            desk.OnMove += async moveInfo =>
             {
                 if (!IsMyMove)
                 {
                     return;
                 }
-                await httpClient.SelectSquare(new SelectSquareArgs
+                await httpClient.OnMove(new OnMoveArgs
                 {
                     Sid = CurrentSid,
-                    SquareRef = square.GetRef()
+                    MovedFrom = moveInfo.MovedFrom.GetRef(),
+                    MovedTo = moveInfo.Piece.Square.GetRef(),
                 });
             };
         }
@@ -48,15 +47,15 @@ namespace Net
             joinResult = await httpClient.Join();
         }
 
-        public void CheckNews()
+        public async Task CheckNews()
         {
-            var news = httpClient.AskNews(new AskNewsArgs
+            var news = await httpClient.AskNews(new AskNewsArgs
             {
                 PlayerSid = CurrentSid
             });
-            if (news.Result.News.Count > 0)
+            if (news.News.Count > 0)
             {
-                foreach (var New in news.Result.News)
+                foreach (var New in news.News)
                 {
                     switch (New)
                     {
