@@ -17,14 +17,12 @@ namespace Net
         
         public string CurrentSid => joinResult.Sid;
 
-        public bool IsMyMove => joinResult != null && Color == desk.move;
-
         public ChessNetClient(Desk desk)
         {
             this.desk = desk;
             desk.OnMove += async moveInfo =>
             {
-                if (!IsMyMove)
+                if (Color != moveInfo.MoveColor)
                 {
                     return;
                 }
@@ -66,7 +64,6 @@ namespace Net
                             desk.Select(movedFrom, enemyColor);
                             desk.Select(movedTo, enemyColor);
                             break;
-                    
                     }
                 }
             }

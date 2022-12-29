@@ -37,6 +37,8 @@ public class ChessController : Controller
         var task = await Request.BodyReader.ReadAsync();
         var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
         var args = JsonConvert.DeserializeObject<AskNewsArgs>(requestString);
+
+        var player = Server.GetPlayer(args.PlayerSid);
         
         if (args == null) 
             throw new Exception("NoArgs");

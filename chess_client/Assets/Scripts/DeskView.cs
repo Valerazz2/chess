@@ -22,6 +22,10 @@ public class DeskView : AbstractView<Desk>
         desk.CreateMap();
         Bind(desk);
         await _chessNetClient.Join();
+        if (_chessNetClient.Color == ChessColor.Black)
+        {
+            gameObject.transform.Rotate(Vector3.forward, 180);
+        }
         GetComponent<UserInput>().UserColor = _chessNetClient.Color;
         StartCoroutine(CheckNews());
     }
@@ -56,7 +60,7 @@ public class DeskView : AbstractView<Desk>
         {
             var task = _chessNetClient.CheckNews();
             yield return new WaitUntil(() => task.IsCompleted);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(20);
         }
     }
 }
