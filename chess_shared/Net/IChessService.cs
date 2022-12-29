@@ -1,11 +1,13 @@
-﻿namespace Chess.Server
+﻿using chess_shared.Net;
+
+namespace Chess.Server
 {
     public interface IChessService
     {
         JoinResult Join();
 
-        void MovePiece(OnMoveArgs args);
+        void MovePiece(MovePieceArgs args);
 
-        AskNewsResult AskNews(AskNewsArgs newsArgs);
+        AskNewsResult AskNews(AskNewsArgs args);
     }
 }

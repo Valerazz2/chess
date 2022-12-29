@@ -1,3 +1,4 @@
+using chess_shared.Net;
 using Chess.Server;
 
 namespace Chess.Model
@@ -58,9 +59,9 @@ namespace Chess.Model
             }
         }
 
-        public void MovePiece(OnMoveArgs args)
+        public void MovePiece(MovePieceArgs args)
         {
-            var player = GetPlayer(args.Sid);
+            var player = GetPlayer(args);
             var desk = player.game.Desk;
             lock (desk)
             {
@@ -71,7 +72,7 @@ namespace Chess.Model
 
         public AskNewsResult AskNews(AskNewsArgs args)
         {
-            var player = GetPlayer(args.PlayerSid);
+            var player = GetPlayer(args);
             
             var result = new AskNewsResult()
             {
@@ -90,6 +91,11 @@ namespace Chess.Model
             }
 
             return player;
+        }
+
+        public ServerPlayer GetPlayer(AbstractSidArgs args)
+        {
+            return GetPlayer(args.Sid);
         }
         
         public ServerPlayer GetPlayer(string sid)

@@ -1,4 +1,5 @@
 using System.Text;
+using chess_shared.Net;
 using Chess.Model;
 using Chess.Server;
 using Microsoft.AspNetCore.Mvc;
@@ -28,17 +29,20 @@ public class ChessController : Controller
     {
         var task = await Request.BodyReader.ReadAsync();
         var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
-        var args = JsonConvert.DeserializeObject<OnMoveArgs>(requestString);
+        var args = JsonConvert.DeserializeObject<MovePieceArgs>(requestString);
         if (args != null) Server.MovePiece(args);
     }
 
-    public async Task<string> AskNews()
+    public string AskNews()
     {
-        var task = await Request.BodyReader.ReadAsync();
-        var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
+        var task = Request.BodyReader.TryRead(out var readResult);
+        var requestString = EncodingExtensions.GetString(Encoding.UTF8, readResult.Buffer);
+        Request.BodyReader.Complete();
+        return requestString;
+        /*
         var args = JsonConvert.DeserializeObject<AskNewsArgs>(requestString);
 
-        var player = Server.GetPlayer(args.PlayerSid);
+        var player = Server.GetPlayer(args.Sid);
         
         if (args == null) 
             throw new Exception("NoArgs");
@@ -46,5 +50,6 @@ public class ChessController : Controller
         var result = Server.AskNews(args);
 
         return JsonConvert.SerializeObject(result);
+        */
     }
 }

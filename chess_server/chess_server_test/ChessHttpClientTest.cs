@@ -7,7 +7,6 @@ namespace chess_server_test;
 
 public class ChessHttpClientTest
 {
-    private static Server Server => Server.Instance;
     
     [SetUp]
     public void Setup()
@@ -17,9 +16,17 @@ public class ChessHttpClientTest
     [Test]
     public async Task SimpleJoinTest()
     {
-        Server.Clear();
         var client = new ChessHttpClient();
         var whiteJoinResult = await client.Join();
-        Assert.NotNull(whiteJoinResult.Sid);
+        Assert.True(whiteJoinResult.Color == ChessColor.White);
+        var blackJoinResult = await client.Join();
+        Assert.True(blackJoinResult.Color == ChessColor.Black);
+        await client.OnMove(new MovePieceArgs()
+        {
+            Sid = whiteJoinResult.Sid,
+            MovedFrom = "e2",
+            MovedTo = "e4"
+        });
+        
     }
 }

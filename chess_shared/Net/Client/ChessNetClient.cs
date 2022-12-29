@@ -26,7 +26,7 @@ namespace Net
                 {
                     return;
                 }
-                await httpClient.OnMove(new OnMoveArgs
+                await httpClient.OnMove(new MovePieceArgs
                 {
                     Sid = CurrentSid,
                     MovedFrom = moveInfo.MovedFrom.GetRef(),
@@ -49,7 +49,7 @@ namespace Net
         {
             var news = await httpClient.AskNews(new AskNewsArgs
             {
-                PlayerSid = CurrentSid
+                Sid = CurrentSid
             });
             if (news.News.Count > 0)
             {

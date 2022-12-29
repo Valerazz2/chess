@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Chess.Server
+﻿namespace chess_shared.Net
 {
-    public class AskNewsArgs
+    public class AskNewsArgs : AbstractSidArgs
     {
-        public string PlayerSid;
     }
 }

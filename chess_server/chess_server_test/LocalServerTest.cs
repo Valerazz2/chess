@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using chess_shared.Net;
 using Chess.Model;
 using Chess.Server;
 using Net;
@@ -36,7 +37,7 @@ public class LocalServerTest
         Assert.True(playerWhite.game.Desk.move == ChessColor.White);
         var playerBlack = Server.GetPlayer(joinB.Sid);
         Assert.True(playerBlack.NewsForClient.Count == 0);
-        Server.MovePiece(new OnMoveArgs
+        Server.MovePiece(new MovePieceArgs
         {
             Sid = joinW.Sid,
             MovedFrom = "e2",
@@ -46,7 +47,7 @@ public class LocalServerTest
         Assert.True(playerBlack.NewsForClient.Count == 1);
         var New=Server.AskNews(new AskNewsArgs
         {
-            PlayerSid = joinB.Sid,
+            Sid = joinB.Sid,
         });
         Assert.True(New.News.Count == 1);
         EnemyFigureMoved news = (EnemyFigureMoved)New.News[0];

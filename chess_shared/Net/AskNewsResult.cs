@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Chess.Server;
 
-namespace Chess.Server
+namespace chess_shared.Net
 {
     public class AskNewsResult
     {
