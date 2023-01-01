@@ -1,3 +1,10 @@
+//
+// https://habr.com/ru/company/otus/blog/542494/
+// 
+var fullPath = Path.GetFullPath("log4net.config.xml");
+var fileInfo = new FileInfo(fullPath);
+log4net.Config.XmlConfigurator.Configure(fileInfo);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

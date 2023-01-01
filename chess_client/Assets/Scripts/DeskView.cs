@@ -60,7 +60,8 @@ public class DeskView : AbstractView<Desk>
         {
             var task = _chessNetClient.CheckNews();
             yield return new WaitUntil(() => task.IsCompleted);
-            yield return new WaitForSeconds(2);
+            Debug.Log("NewsAsked");
+            yield return new WaitForSeconds(1);
         }
     }
 }

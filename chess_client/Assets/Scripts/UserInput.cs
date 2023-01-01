@@ -17,7 +17,7 @@ public class UserInput : MonoBehaviour
     public void SelectSquare()
     {
         var target = GetSquareByMousePos();
-        target.Select(UserColor);
+        target?.Select(UserColor);
     }
     
     private Square GetSquareByMousePos()

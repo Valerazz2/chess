@@ -94,6 +94,7 @@ namespace Chess.Model
             
             var eventInfo = new MoveInfo
             {
+                MoveColor = move.Invert(),
                 Piece = piece,
                 MovedFrom = piece.Square,
             };
