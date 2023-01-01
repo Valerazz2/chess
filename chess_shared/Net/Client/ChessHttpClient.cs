@@ -41,7 +41,14 @@ namespace chess_shared.Net
 
         public async Task<AskNewsResult> AskNews(AskNewsArgs args)
         {
-            return await Query<AskNewsResult, AskNewsArgs>(nameof(IChessService.AskNews), args);
+            var url = EndPoint + nameof(AskNews);
+            var argsJson = args == null ? "" : JsonSerializer.SerializeObj(args);
+            var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
+            HttpResponseMessage response = await _client.PostAsync(url, data);
+            var responseJson = await response.Content.ReadAsStringAsync();
+            response.Dispose();
+            var result = JsonSerializer.DeserializeObj<AskNewsResult>(responseJson);
+            return result;
         }
     }
 }

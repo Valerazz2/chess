@@ -1,9 +1,12 @@
 using System.Text;
+using System.Text.Json;
 using chess_shared.Net;
 using Chess.Model;
 using Chess.Server;
 using Microsoft.AspNetCore.Mvc;
+using Net;
 using Newtonsoft.Json;
+using JsonSerializer = chess_shared.Net.JsonSerializer;
 
 namespace chess_server.Controllers;
 
@@ -25,31 +28,20 @@ public class ChessController : Controller
         return JsonConvert.SerializeObject(result);
     }
     
-    public async Task Move()
+    public void Move([FromBody] string args)
     {
-        var task = await Request.BodyReader.ReadAsync();
-        var requestString = EncodingExtensions.GetString(Encoding.UTF8, task.Buffer);
-        var args = JsonConvert.DeserializeObject<MovePieceArgs>(requestString);
-        if (args != null) Server.MovePiece(args);
+        var movePieceArgs = JsonSerializer.DeserializeObj<MovePieceArgs>(args);
+        Server.MovePiece(movePieceArgs);
     }
-
-    public string AskNews()
+    
+    public string AskNews([FromBody] string args)
     {
-        var task = Request.BodyReader.TryRead(out var readResult);
-        var requestString = EncodingExtensions.GetString(Encoding.UTF8, readResult.Buffer);
-        Request.BodyReader.Complete();
-        return requestString;
-        /*
-        var args = JsonConvert.DeserializeObject<AskNewsArgs>(requestString);
-
-        var player = Server.GetPlayer(args.Sid);
-        
-        if (args == null) 
-            throw new Exception("NoArgs");
-        
-        var result = Server.AskNews(args);
-
-        return JsonConvert.SerializeObject(result);
-        */
+        var askNewsArgs = JsonSerializer.DeserializeObj<AskNewsArgs>(args);
+        var askNewsResult = Server.AskNews(new AskNewsArgs
+        {
+            Sid = askNewsArgs?.Sid
+        });
+        var result = JsonSerializer.SerializeObj(askNewsResult);
+        return result;
     }
 }
