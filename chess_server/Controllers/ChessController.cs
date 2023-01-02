@@ -25,10 +25,11 @@ public class ChessController : Controller
         return ret;
     }
     
-    public void Move([FromBody] JsonElement args)
+    public string Move([FromBody] JsonElement args)
     {
         var movePieceArgs = JsonSerializer.DeserializeObj<MovePieceArgs>(args.ToString());
         Server.MovePiece(movePieceArgs);
+        return JsonConvert.SerializeObject(true);
     }
 
     public string AskNews([FromBody] JsonElement args)

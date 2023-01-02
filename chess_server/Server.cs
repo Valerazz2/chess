@@ -51,6 +51,10 @@ namespace Chess.Model
                     game.PlayerBlack = player;
                 }
 
+                if (player.Color == ChessColor.Black)
+                {
+                    player.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
+                }
                 return new JoinResult
                 {
                     Sid = player.ID,

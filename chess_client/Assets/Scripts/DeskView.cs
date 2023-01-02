@@ -1,41 +1,48 @@
-using System.Collections;
 using System.Threading.Tasks;
 using Chess.Model;
 using Chess.View;
 using Net;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DeskView : AbstractView<Desk>
 {
     [SerializeField] private SquareView squareViewPrefab;
     [SerializeField] private PieceView pieceViewPrefab;
+    [SerializeField] private NetView netView;
     private SquareView choosedSquare;
-    private ChessNetClient _chessNetClient;
+    public ChessNetClient ChessNetClient;
+    private Desk desk;
 
     private async Task Start()
     {
         TaskScheduler.UnobservedTaskException +=
+            
             (_, e) => Debug.LogException(e.Exception);
-        var desk = new Desk();
-        _chessNetClient = new ChessNetClient(desk);
+        desk = new Desk();
         desk.CreateMap();
-        Bind(desk);
-        await _chessNetClient.Join();
-        if (_chessNetClient.Color == ChessColor.Black)
-        {
-            gameObject.transform.Rotate(Vector3.forward, 180);
-        }
-        GetComponent<UserInput>().UserColor = _chessNetClient.Color;
-        StartCoroutine(CheckNews());
+        ChessNetClient = new ChessNetClient(desk);
+        netView.Desk = desk;
+        netView.ChessNetClient = ChessNetClient;
+        ChessNetClient.EnemyJoined += BuildMap;
     }
-
     protected override void OnBind()
     {
         CreateViews(model.ISquares, squareViewPrefab);
+        if (ChessNetClient.Color == ChessColor.Black)
+        {
+            RotatePieces(180);
+        }
+        else if(ChessNetClient.Color == ChessColor.White)
+        {
+            RotatePieces(0);
+        }
         CreateViews(model.GetAllPiece(), pieceViewPrefab);
         
         model.OnPieceAdd += CreateView2;
+    }
+    public void BuildMap()
+    {
+        Bind(desk);
     }
 
     private void CreateView2(Piece p)
@@ -43,25 +50,8 @@ public class DeskView : AbstractView<Desk>
         CreateView(p, pieceViewPrefab);
     }
 
-    private string GetSquareRef(int x, int y)
+    private void RotatePieces(float angle)
     {
-        return "" + (char) ('a' + x) + (char) ('1' + y);
-    }
-    
-    private IEnumerator ReloadSceneIn(int seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        SceneManager.LoadScene("SampleScene");
-    }
-
-    private IEnumerator CheckNews()
-    {
-        while (true)
-        {
-            var task = _chessNetClient.CheckNews();
-            yield return new WaitUntil(() => task.IsCompleted);
-            Debug.Log("NewsAsked");
-            yield return new WaitForSeconds(1);
-        }
+        pieceViewPrefab.transform.rotation = new Quaternion(0,0,angle,0);
     }
 }
