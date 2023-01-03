@@ -1,6 +1,7 @@
 using System.Text.Json;
 using chess_shared.Net;
 using Chess.Model;
+using Chess.Server;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using JsonSerializer = chess_shared.Net.JsonSerializer;
@@ -42,4 +43,13 @@ public class ChessController : Controller
         var result = JsonSerializer.SerializeObj(askNewsResult);
         return result;
     }
+
+    public string DeleteAppliedNew([FromBody] JsonElement args)
+    {
+        var applyNews = JsonSerializer.DeserializeObj<ApplyNews>(args.ToString());
+        var player = Server.GetPlayer(applyNews);
+        player.DeleteAppliedNews(applyNews);
+        return JsonConvert.SerializeObject(true);
+    }
+    
 }

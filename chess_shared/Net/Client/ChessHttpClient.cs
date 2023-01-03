@@ -33,6 +33,7 @@ namespace chess_shared.Net
 
         public async Task<bool> OnMove(MovePieceArgs pieceArgs)
         {
+            
             var url = EndPoint + "Move";
             var argsJson = pieceArgs == null ? "" : JsonConvert.SerializeObject(pieceArgs);
             var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
@@ -52,6 +53,18 @@ namespace chess_shared.Net
             var responseJson = await response.Content.ReadAsStringAsync();
             response.Dispose();
             var result = JsonSerializer.DeserializeObj<AskNewsResult>(responseJson);
+            return result;
+        }
+
+        public async Task<bool> DeleteAppliedNew(ApplyNews args)
+        {
+            var url = EndPoint + nameof(DeleteAppliedNew);
+            var argsJson = args == null ? "" : JsonSerializer.SerializeObj(args);
+            var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
+            HttpResponseMessage response = await _client.PostAsync(url, data);
+            var responseJson = await response.Content.ReadAsStringAsync();
+            response.Dispose();
+            var result = JsonConvert.DeserializeObject<bool>(responseJson);
             return result;
         }
     }

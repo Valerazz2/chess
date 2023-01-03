@@ -77,6 +77,19 @@ namespace Net
                             EnemyJoined?.Invoke();
                             break;
                     }
+
+                    while (true)
+                    {
+                        var success = await httpClient.DeleteAppliedNew(new ApplyNews()
+                        {
+                            AppliedNew = New,
+                            Sid = CurrentSid
+                        });
+                        if (success)
+                        {
+                            break;
+                        }
+                    }
                 }
             }
         }

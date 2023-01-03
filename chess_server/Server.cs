@@ -82,7 +82,6 @@ namespace Chess.Model
             {
                 News = new List<News>(player.NewsForClient)
             };
-            player.NewsForClient.Clear();
             return result;
         }
 

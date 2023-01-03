@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Chess.Model;
 using Chess.View;
@@ -13,7 +14,7 @@ public class DeskView : AbstractView<Desk>
     public ChessNetClient ChessNetClient;
     private Desk desk;
 
-    private async Task Start()
+    private void Start()
     {
         TaskScheduler.UnobservedTaskException +=
             (_, e) => Debug.LogException(e.Exception);

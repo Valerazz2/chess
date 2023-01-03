@@ -1,4 +1,5 @@
 ﻿using System;
+using chess_shared.Net;
 using Chess.Server;
 using Net;
 
@@ -33,6 +34,17 @@ namespace Chess.Model
                 NewsForClient.Add(news);
             }
         }
-        
+
+        public void DeleteAppliedNews(ApplyNews applyNews)
+        {
+            foreach (var news in NewsForClient)
+            {
+                if (applyNews.AppliedNew.ID == news.ID)
+                {
+                    NewsForClient.Remove(news);
+                    break;
+                }
+            }
+        }
     }
 }
