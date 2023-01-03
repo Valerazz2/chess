@@ -14,7 +14,6 @@ public class NetView : MonoBehaviour
     public async void Join()
     {
         ChessNetClient = deskView.ChessNetClient;
-        Debug.Log("Join");
         await ChessNetClient.Join();
         if (ChessNetClient.Color == ChessColor.Black)
         {

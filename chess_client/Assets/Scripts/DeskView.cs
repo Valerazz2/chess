@@ -16,7 +16,6 @@ public class DeskView : AbstractView<Desk>
     private async Task Start()
     {
         TaskScheduler.UnobservedTaskException +=
-            
             (_, e) => Debug.LogException(e.Exception);
         desk = new Desk();
         desk.CreateMap();

@@ -20,13 +20,14 @@ namespace Chess.Model
         private ChessState ChessState = ChessState.PieceNull;
 
         public event Action<MoveInfo> OnMove;
+        public event Action<MoveInfo> OnServerMove; 
         public event Action<Piece> OnPieceAdd;
         public event Action<Piece> OnPieceRemove; 
         public event Action<Piece> OnPieceCaptured;
         
         private Player whitePlayer, blackPlayer;
 
-        public MoveInfo prevMove = new MoveInfo();
+        public MoveInfo prevMove = new();
 
         public void CreateMap()
         {
@@ -99,8 +100,9 @@ namespace Chess.Model
                 MovedFrom = piece.Square,
             };
             piece.MoveTo(target);
+            OnServerMove?.Invoke(eventInfo);
             OnMove?.Invoke(eventInfo);
-            
+
             if (wantTakeOnThePass)
             {
                 OnTakeOnThePass(eventInfo.MovedFrom, piece);

@@ -18,7 +18,7 @@ namespace Chess.Model
         {
             this.game = game;
             Color = color;
-            this.game.Desk.OnMove += AddMoveNew;
+            this.game.Desk.OnServerMove += AddMoveNew;
         }
 
         private void AddMoveNew(MoveInfo moveInfo)

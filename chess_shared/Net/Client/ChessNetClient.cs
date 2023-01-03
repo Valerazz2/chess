@@ -22,7 +22,7 @@ namespace Net
         public ChessNetClient(Desk desk)
         {
             this.desk = desk;
-            desk.OnMove += OnMove;
+            desk.OnServerMove += OnMove;
         }
 
         private async void OnMove(MoveInfo moveInfo)
@@ -44,6 +44,8 @@ namespace Net
                 {
                     break;
                 }
+
+                await Task.Delay(1000);
             }
         }
         public async Task Join()
