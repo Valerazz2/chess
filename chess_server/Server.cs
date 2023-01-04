@@ -1,5 +1,6 @@
 using chess_shared.Net;
 using Chess.Server;
+using Net;
 
 namespace Chess.Model
 {
@@ -29,7 +30,7 @@ namespace Chess.Model
         {
         }
 
-        public JoinResult Join()
+        public JoinResult Join(JoinArgs args)
         {
             lock (_joinLock)
             {
@@ -63,7 +64,7 @@ namespace Chess.Model
             }
         }
 
-        public void MovePiece(MovePieceArgs args)
+        public MoveResult MovePiece(MovePieceArgs args)
         {
             var player = GetPlayer(args);
             var desk = player.game.Desk;
@@ -72,13 +73,15 @@ namespace Chess.Model
                 desk.Select(args.MovedFrom, player.Color);
                 desk.Select(args.MovedTo, player.Color);
             }
+
+            return new MoveResult();
         }
 
         public AskNewsResult AskNews(AskNewsArgs args)
         {
             var player = GetPlayer(args);
             
-            var result = new AskNewsResult()
+            var result = new AskNewsResult
             {
                 News = new List<News>(player.NewsForClient)
             };

@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Chess.Server;
+using Net;
 using Newtonsoft.Json;
 
 namespace chess_shared.Net
@@ -17,55 +18,28 @@ namespace chess_shared.Net
         private async Task<TResult> Query<TResult, TArgs>(string method, TArgs args) where TArgs : class
         {
             var url = EndPoint + method;
-            var argsJson = args == null ? "" : JsonConvert.SerializeObject(args);
+            var argsJson = args == null ? "" : JsonSerializer.SerializeObj(args);
             var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
             HttpResponseMessage response = await _client.PostAsync(url, data);
             var responseJson = await response.Content.ReadAsStringAsync();
             response.Dispose();
-            var result = JsonConvert.DeserializeObject<TResult>(responseJson);
+            var result = JsonSerializer.DeserializeObj<TResult>(responseJson);
             return result;
         }
 
         public async Task<JoinResult> Join()
         {
-            return await Query<JoinResult, object>(nameof(IChessService.Join), null);
+            return await Query<JoinResult, object>(nameof(Join), null);
         }
 
-        public async Task<bool> OnMove(MovePieceArgs pieceArgs)
+        public async Task<MoveResult> MovePiece(MovePieceArgs args)
         {
-            var url = EndPoint + "Move";
-            var argsJson = pieceArgs == null ? "" : JsonConvert.SerializeObject(pieceArgs);
-            var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
-           HttpResponseMessage response = await _client.PostAsync(url, data);
-           var responseJson = await response.Content.ReadAsStringAsync();
-           response.Dispose();
-          var result = JsonConvert.DeserializeObject<bool>(responseJson);
-          return result;
+            return await Query<MoveResult, object>(nameof(MovePiece), args);
         }
 
         public async Task<AskNewsResult> AskNews(AskNewsArgs args)
         {
-            var url = EndPoint + nameof(AskNews);
-            var argsJson = args == null ? "" : JsonSerializer.SerializeObj(args);
-            var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
-            HttpResponseMessage response = await _client.PostAsync(url, data);
-            var responseJson = await response.Content.ReadAsStringAsync();
-            response.Dispose();
-            var result = JsonSerializer.DeserializeObj<AskNewsResult>(responseJson);
-            return result;
+            return await Query<AskNewsResult, object>(nameof(AskNews), args);
         }
-
-        public async Task<bool> DeleteAppliedNew(ApplyNews args)
-        {
-            var url = EndPoint + nameof(DeleteAppliedNew);
-            var argsJson = args == null ? "" : JsonSerializer.SerializeObj(args);
-            var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
-            HttpResponseMessage response = await _client.PostAsync(url, data);
-            var responseJson = await response.Content.ReadAsStringAsync();
-            response.Dispose();
-            var result = JsonConvert.DeserializeObject<bool>(responseJson);
-            return result;
-        }
-        
     }
 }

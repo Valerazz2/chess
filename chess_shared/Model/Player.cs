@@ -6,23 +6,29 @@ namespace Chess.Model
 {
     public class Player
     {
-        private readonly List<PieceType> capturedPieces = new List<PieceType>();
+        public readonly List<PieceClone> capturedPieces = new();
         
         private ChessColor color;
-        public int CapturedPiecesPrice => capturedPieces.Sum(pieceType => pieceType.GetPrice());
+
+        private int GetCapturedValue()
+        {
+            int value = 0;
+            foreach (var pieceTypeClone in capturedPieces)
+            {
+                value += pieceTypeClone.Count * pieceTypeClone.PieceType.GetPrice();
+            }
+            return value;
+        }
 
         public Player(ChessColor chessColor, Desk desk)
         {
             color = chessColor;
-            desk.OnPieceCaptured += AddPiece;
-        }
-
-        private void AddPiece(Piece piece)
-        {
-            if (piece.Color != color)
-            {
-                capturedPieces.Add(piece.GetPieceType());
-            }
+            capturedPieces.Add(new PieceClone(color, desk, PieceType.Pawn));
+            capturedPieces.Add(new PieceClone(color, desk, PieceType.Knight));
+            capturedPieces.Add(new PieceClone(color, desk, PieceType.Bishop));
+            capturedPieces.Add(new PieceClone(color, desk, PieceType.Rook));
+            capturedPieces.Add(new PieceClone(color, desk, PieceType.Queen));
+            capturedPieces.Add(new PieceClone(color, desk, PieceType.King));
         }
     }
 }

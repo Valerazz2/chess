@@ -14,8 +14,6 @@ namespace Chess.Model
 
         public bool TryMoveSuccess(Square target)
         {
-            //Debug.Log(this + " " + Color + " " + Square.Pos.X + " " + Square.Pos.Y + 
-                      //" to " + target.Pos.X + " " + target.Pos.Y);
             var targetPiece = target.Piece;
             var oldSquare = Square;
         

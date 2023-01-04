@@ -22,15 +22,15 @@ public class LocalServerTest
     public void SimpleJoinTest()
     {
         Server.Clear();
-        var joinW = Server.Join();
+        var joinW = Server.Join(new JoinArgs());
         Assert.AreEqual(ChessColor.White, joinW.Color);
-        var joinB = Server.Join();
+        var joinB = Server.Join(new JoinArgs());
         Assert.AreEqual(ChessColor.Black, joinB.Color);
         Assert.True(Server.GameCount == 1);
-        joinW = Server.Join();
+        joinW = Server.Join(new JoinArgs());
         Assert.AreEqual(ChessColor.White, joinW.Color);
         Assert.True(Server.GameCount == 1);
-        joinB = Server.Join();
+        joinB = Server.Join(new JoinArgs());
         Assert.AreEqual(ChessColor.Black, joinB.Color);
         Assert.True(Server.GameCount == 2);
         var playerWhite = Server.GetPlayer(joinW.Sid);
@@ -64,7 +64,7 @@ public class LocalServerTest
     {
         for (var i = 0; i < 10; i++)
         {
-            Server.Join();
+            Server.Join(new JoinArgs());
         }
     }
     

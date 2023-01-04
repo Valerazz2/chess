@@ -6,6 +6,6 @@ namespace chess_shared.Net
 
     public class ApplyNews : AbstractSidArgs
     {
-        public News AppliedNew;
+        public string AppliedNewId;
     }
 }

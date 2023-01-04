@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using chess_shared.Net;
 using Chess.Model;
@@ -15,10 +16,10 @@ namespace Net
         public JoinResult joinResult;
         
         public ChessColor Color => joinResult.Color;
-        
         public string CurrentSid => joinResult.Sid;
         public event Action EnemyJoined;
 
+        private List<string> appliedNewsId = new();
         public ChessNetClient(Desk desk)
         {
             this.desk = desk;
@@ -27,25 +28,14 @@ namespace Net
 
         private async void OnMove(MoveInfo moveInfo)
         {
-            if (Color != moveInfo.MoveColor)
+            if (Color == moveInfo.MoveColor)
             {
-                return;
-            }
-
-            while (true)
-            {
-                var success = await httpClient.OnMove(new MovePieceArgs
+                MoveResult moveResult = await httpClient.MovePiece(new MovePieceArgs
                 {
                     Sid = CurrentSid,
                     MovedFrom = moveInfo.MovedFrom.GetRef(),
                     MovedTo = moveInfo.Piece.Square.GetRef(),
                 });
-                if (success)
-                {
-                    break;
-                }
-
-                await Task.Delay(1000);
             }
         }
         public async Task Join()
@@ -57,8 +47,10 @@ namespace Net
         {
             var news = await httpClient.AskNews(new AskNewsArgs
             {
+                NewsID = appliedNewsId,
                 Sid = CurrentSid
             });
+            
             if (news.News.Count > 0)
             {
                 foreach (var New in news.News)
@@ -77,19 +69,7 @@ namespace Net
                             EnemyJoined?.Invoke();
                             break;
                     }
-
-                    while (true)
-                    {
-                        var success = await httpClient.DeleteAppliedNew(new ApplyNews()
-                        {
-                            AppliedNew = New,
-                            Sid = CurrentSid
-                        });
-                        if (success)
-                        {
-                            break;
-                        }
-                    }
+                    appliedNewsId.Add(New.ID);
                 }
             }
         }

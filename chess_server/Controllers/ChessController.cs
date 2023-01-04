@@ -1,8 +1,8 @@
 using System.Text.Json;
 using chess_shared.Net;
 using Chess.Model;
-using Chess.Server;
 using Microsoft.AspNetCore.Mvc;
+using Net;
 using Newtonsoft.Json;
 using JsonSerializer = chess_shared.Net.JsonSerializer;
 
@@ -18,38 +18,35 @@ public class ChessController : Controller
     {
     }
 
-    public string Join()
+    public string Join([FromBody] JsonElement args)
     {
-        var result = Server.Join();
-        var ret = JsonConvert.SerializeObject(result);
+        var joinArgs = JsonSerializer.DeserializeObj<JoinArgs>(args.ToString());
+        var result = Server.Join(joinArgs);
+        var ret = JsonSerializer.SerializeObj(result);
         log.Info("Join:result:" + ret);
         return ret;
     }
     
-    public string Move([FromBody] JsonElement args)
+    public string MovePiece([FromBody] JsonElement args)
     {
         var movePieceArgs = JsonSerializer.DeserializeObj<MovePieceArgs>(args.ToString());
         Server.MovePiece(movePieceArgs);
-        return JsonConvert.SerializeObject(true);
+        return JsonSerializer.SerializeObj(new MoveResult());
     }
 
     public string AskNews([FromBody] JsonElement args)
     {
         var askNewsArgs = JsonSerializer.DeserializeObj<AskNewsArgs>(args.ToString());
+        if (askNewsArgs.NewsID.Count > 0)
+        {
+            var player = Server.GetPlayer(askNewsArgs.Sid);
+            player.DeleteAppliedNews(askNewsArgs.NewsID);
+        }
         var askNewsResult = Server.AskNews(new AskNewsArgs
         {
-            Sid = askNewsArgs?.Sid
+            Sid = askNewsArgs.Sid
         });
         var result = JsonSerializer.SerializeObj(askNewsResult);
         return result;
     }
-
-    public string DeleteAppliedNew([FromBody] JsonElement args)
-    {
-        var applyNews = JsonSerializer.DeserializeObj<ApplyNews>(args.ToString());
-        var player = Server.GetPlayer(applyNews);
-        player.DeleteAppliedNews(applyNews);
-        return JsonConvert.SerializeObject(true);
-    }
-    
 }

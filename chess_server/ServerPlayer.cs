@@ -31,18 +31,24 @@ namespace Chess.Model
                     MovedFrom = moveInfo.MovedFrom.GetRef(),
                     MovedTo = moveInfo.Piece.Square.GetRef()
                 };
-                NewsForClient.Add(news);
+                lock (NewsForClient)
+                {
+                    NewsForClient.Add(news);
+                }
             }
         }
 
-        public void DeleteAppliedNews(ApplyNews applyNews)
+        public void DeleteAppliedNews(List<string> newsId)
         {
-            foreach (var news in NewsForClient)
+            foreach (var currentNewsId in newsId)
             {
-                if (applyNews.AppliedNew.ID == news.ID)
+                lock (NewsForClient)
                 {
-                    NewsForClient.Remove(news);
-                    break;
+                    foreach (var news in NewsForClient.Where(news => currentNewsId == news.ID))
+                    {
+                        NewsForClient.Remove(news);
+                        break;
+                    }
                 }
             }
         }

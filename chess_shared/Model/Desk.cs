@@ -25,7 +25,7 @@ namespace Chess.Model
         public event Action<Piece> OnPieceRemove; 
         public event Action<Piece> OnPieceCaptured;
         
-        private Player whitePlayer, blackPlayer;
+        public Player WhitePlayer, BlackPlayer;
 
         public MoveInfo prevMove = new();
 
@@ -58,8 +58,8 @@ namespace Chess.Model
                 }
             }
 
-            whitePlayer = new Player(ChessColor.White, this);
-            blackPlayer = new Player(ChessColor.Black, this);
+            WhitePlayer = new Player(ChessColor.White, this);
+            BlackPlayer = new Player(ChessColor.Black, this);
         }
 
         public IEnumerable<Piece> GetAllPiece()
