@@ -33,7 +33,6 @@ namespace chess_shared.Net
 
         public async Task<bool> OnMove(MovePieceArgs pieceArgs)
         {
-            
             var url = EndPoint + "Move";
             var argsJson = pieceArgs == null ? "" : JsonConvert.SerializeObject(pieceArgs);
             var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
@@ -67,5 +66,6 @@ namespace chess_shared.Net
             var result = JsonConvert.DeserializeObject<bool>(responseJson);
             return result;
         }
+        
     }
 }
