@@ -5,7 +5,7 @@ namespace Chess.Model
     public class PieceClone
     {
         public PieceType PieceType;
-        private int count;
+        private int count = 1;
         public int Count
         {
             get => count;
@@ -20,17 +20,10 @@ namespace Chess.Model
         
         public event Action CountChanged;
         
-        public PieceClone(ChessColor color, Desk desk, PieceType pieceType)
+        public PieceClone(ChessColor color, PieceType pieceType)
         {
             Color = color;
             PieceType = pieceType;
-            desk.OnPieceCaptured += piece =>
-            {
-                if (piece.GetPieceType() == PieceType && piece.Color == Color)
-                {
-                    Count++;
-                }
-            };
         }
         
     }

@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class UserInput : MonoBehaviour
 {
-    [SerializeField]
-    public ChessColor UserColor;
+    [SerializeField] public ChessColor UserColor;
     
     void Update()
     {

@@ -10,6 +10,8 @@ namespace Chess.Model
         
         private ChessColor color;
 
+        public event Action<int> NewTypePieceCaptured;
+
         private int GetCapturedValue()
         {
             int value = 0;
@@ -23,12 +25,27 @@ namespace Chess.Model
         public Player(ChessColor chessColor, Desk desk)
         {
             color = chessColor;
-            capturedPieces.Add(new PieceClone(color, desk, PieceType.Pawn));
-            capturedPieces.Add(new PieceClone(color, desk, PieceType.Knight));
-            capturedPieces.Add(new PieceClone(color, desk, PieceType.Bishop));
-            capturedPieces.Add(new PieceClone(color, desk, PieceType.Rook));
-            capturedPieces.Add(new PieceClone(color, desk, PieceType.Queen));
-            capturedPieces.Add(new PieceClone(color, desk, PieceType.King));
+            desk.OnPieceCaptured += AddCapturedPiece;
+        }
+
+        private void AddCapturedPiece(Piece piece)
+        {
+            if (piece.Color == color)
+            {
+                return;
+            }
+            foreach (var pieceClone in capturedPieces)
+            {
+                if (pieceClone.PieceType == piece.GetPieceType())
+                {
+                    pieceClone.Count++;
+                    return;
+                }
+            }
+
+            var newPieceClone = new PieceClone(color.Invert(), piece.GetPieceType());
+            capturedPieces.Add(newPieceClone);
+            NewTypePieceCaptured?.Invoke(capturedPieces.Count - 1);
         }
     }
 }

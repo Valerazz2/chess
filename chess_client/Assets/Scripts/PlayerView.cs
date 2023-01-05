@@ -1,29 +1,25 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Chess.Model;
-using Chess.View;
 using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
-    [SerializeField] private DeskView deskView;
     [SerializeField] private ChessColor color;
     private Player player;
+    [SerializeField] private List<CapturedPieceView> capturedPieceViews = new();
+    private bool a = true;
+    private Desk desk;
 
-    private void Start()
+    public void Bind(Desk desk)
     {
-        player = color == ChessColor.White ? deskView.model.WhitePlayer : deskView.model.BlackPlayer;
+        this.desk = desk;
+        player = color == ChessColor.White ? desk.WhitePlayer : desk.BlackPlayer;
+        player.NewTypePieceCaptured += CreateNewView;
     }
 
-    private void Display()
+    private void CreateNewView(int index)
     {
-        foreach (var pieces in player.capturedPieces)
-        {
-            if (pieces.Count > 0)
-            {
-                
-            }
-        }
+        var player = color == ChessColor.White ? desk.WhitePlayer : desk.BlackPlayer;
+        capturedPieceViews[index].Bind(player.capturedPieces[index]);
     }
 }

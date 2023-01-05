@@ -10,6 +10,8 @@ public class DeskView : AbstractView<Desk>
     [SerializeField] private SquareView squareViewPrefab;
     [SerializeField] private PieceView pieceViewPrefab;
     [SerializeField] private NetView netView;
+    [SerializeField] private PlayerView playerWhiteView;
+    [SerializeField] private PlayerView playerBlackView;
     private SquareView choosedSquare;
     public ChessNetClient ChessNetClient;
     private Desk desk;
@@ -39,6 +41,8 @@ public class DeskView : AbstractView<Desk>
         CreateViews(model.GetAllPiece(), pieceViewPrefab);
         
         model.OnPieceAdd += CreateView2;
+        playerWhiteView.Bind(desk);
+        playerBlackView.Bind(desk);
     }
     public void BuildMap()
     {
