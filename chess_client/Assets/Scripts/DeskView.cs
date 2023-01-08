@@ -53,9 +53,9 @@ public class DeskView : AbstractView<Desk>
         Bind(desk);
     }
 
-    private void CreateView2(Piece p)
+    private void CreateView2(Piece piece)
     {
-        CreateView(p, pieceViewPrefab, transform);
+        CreateView(piece, pieceViewPrefab, transform);
     }
 
     private void RotatePieces(float angle)

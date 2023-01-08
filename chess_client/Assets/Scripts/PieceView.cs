@@ -12,7 +12,7 @@ namespace Chess.View
             sprite = Resources.Load<Sprite>("pieces/" + model.GetPieceType() + "_" + model.Color);
             GetComponent<SpriteRenderer>().sprite = sprite;
             
-            transform.position = model.Square.GetPosVector3();
+            transform.localPosition = model.Square.GetPosVector3();
 
             model.Desk.OnMove += OnFigureMoved;
             model.Desk.OnPieceRemove += OnFigureRemoved;
