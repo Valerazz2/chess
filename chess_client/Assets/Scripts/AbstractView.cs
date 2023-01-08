@@ -15,17 +15,17 @@ namespace Chess.View
 
         protected abstract void OnBind();
         
-        protected void CreateViews<M, V>(IEnumerable<M> modelList, V viewPrefab) where V : AbstractView<M>
+        protected void CreateViews<M, V>(IEnumerable<M> modelList, V viewPrefab, Transform parent) where V : AbstractView<M>
         {
             foreach (var model in modelList)
             {
-                CreateView(model, viewPrefab);
+                CreateView(model, viewPrefab, parent);
             }
         }
         
-        protected void CreateView<M, V>(M model, V viewPrefab) where V : AbstractView<M>
+        protected void CreateView<M, V>(M model, V viewPrefab, Transform parent) where V : AbstractView<M>
         {
-            var view = Instantiate(viewPrefab);
+            var view = Instantiate(viewPrefab, parent);
             view.Bind(model);
         }
 

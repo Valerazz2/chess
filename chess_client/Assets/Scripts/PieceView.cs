@@ -30,7 +30,7 @@ namespace Chess.View
         {
             if (moveInfo.Piece == model)
             {
-                LeanTween.move(gameObject, model.Square.GetPosVector3(), 0.2f).setEase(LeanTweenType.easeOutCirc);
+                LeanTween.moveLocal(gameObject, model.Square.GetPosVector3(), 0.2f).setEase(LeanTweenType.easeOutCirc);
             }
         }
     }

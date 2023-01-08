@@ -6,11 +6,10 @@ namespace Chess.Model
 {
     public class Player
     {
-        public readonly List<PieceClone> capturedPieces = new();
-        
+        private readonly List<PieceClone> capturedPieces = new();
         private ChessColor color;
 
-        public event Action<int> NewTypePieceCaptured;
+        public event Action<PieceClone> NewPieceTypeCaptured;
 
         private int GetCapturedValue()
         {
@@ -45,7 +44,7 @@ namespace Chess.Model
 
             var newPieceClone = new PieceClone(color.Invert(), piece.GetPieceType());
             capturedPieces.Add(newPieceClone);
-            NewTypePieceCaptured?.Invoke(capturedPieces.Count - 1);
+            NewPieceTypeCaptured?.Invoke(newPieceClone);
         }
     }
 }

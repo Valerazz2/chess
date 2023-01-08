@@ -1,25 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using Chess.Model;
+using Chess.View;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CapturedPieceView : MonoBehaviour
+public class CapturedPieceView : AbstractView<PieceClone>
 {
-    [SerializeField] private Text capturedPieceCountTxt;
-    [SerializeField] private ChessColor color;
-    private PieceClone pieceClone;
-    private Sprite sprite;
+    [SerializeField] private TextMeshProUGUI capturedPieceCountTxt;
 
-    public void Bind(PieceClone pieceClone)
+    protected override void OnBind()
     {
-        this.pieceClone = pieceClone;
-        GetComponent<Image>().sprite = Resources.Load<Sprite>("pieces/" + pieceClone.PieceType + "_" + pieceClone.Color);
-        this.pieceClone.CountChanged += Display;
+        GetComponent<Image>().sprite = Resources.Load<Sprite>("pieces/" + model.PieceType + "_" + model.Color);
+        model.CountChanged += Display;
+    }
+
+    public void CreateViewFor(PieceClone pieceClone)
+    {
+        Bind(pieceClone);
     }
 
     private void Display()
     {
-        capturedPieceCountTxt.text = pieceClone.Count.ToString();
+        capturedPieceCountTxt.text = model.Count.ToString();
     }
 }

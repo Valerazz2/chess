@@ -1,25 +1,25 @@
 using System.Collections.Generic;
 using Chess.Model;
+using Chess.View;
 using UnityEngine;
 
-public class PlayerView : MonoBehaviour
+public class PlayerView : AbstractView<Player>
 {
-    [SerializeField] private ChessColor color;
-    private Player player;
-    [SerializeField] private List<CapturedPieceView> capturedPieceViews = new();
-    private bool a = true;
-    private Desk desk;
+    [SerializeField] private GameObject spotPref;
 
-    public void Bind(Desk desk)
+    private void CreateNewPieceView(PieceClone pieceClone)
     {
-        this.desk = desk;
-        player = color == ChessColor.White ? desk.WhitePlayer : desk.BlackPlayer;
-        player.NewTypePieceCaptured += CreateNewView;
+        var spot = Instantiate(spotPref, transform);
+        spot.GetComponent<CapturedPieceView>().CreateViewFor(pieceClone);
     }
 
-    private void CreateNewView(int index)
+    public void SetModel(Player player)
     {
-        var player = color == ChessColor.White ? desk.WhitePlayer : desk.BlackPlayer;
-        capturedPieceViews[index].Bind(player.capturedPieces[index]);
+        Bind(player);
+    }
+
+    protected override void OnBind()
+    {
+        model.NewPieceTypeCaptured += CreateNewPieceView;
     }
 }

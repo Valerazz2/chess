@@ -6,26 +6,22 @@ using UnityEngine;
 
 public class NetView : MonoBehaviour
 {
-    [SerializeField] private GameObject playbutton;
+    [SerializeField] private GameObject playButton;
     [SerializeField] private DeskView deskView;
     public ChessNetClient ChessNetClient;
-    public Desk Desk;
-    
+
     public async void Join()
     {
         ChessNetClient = deskView.ChessNetClient;
         await ChessNetClient.Join();
-        if (ChessNetClient.Color == ChessColor.Black)
-        {
-            gameObject.transform.Rotate(Vector3.forward, 180);
-        }
         GetComponent<UserInput>().UserColor = ChessNetClient.Color;
         if (ChessNetClient.Color == ChessColor.Black)
         {
             deskView.BuildMap();
+            deskView.transform.RotateAround(new Vector3(3.5f, 3.5f,0), Vector3.forward, 180);
         }
         StartCoroutine(CheckNews());
-        playbutton.SetActive(false);
+        playButton.SetActive(false);
     }
     
     private IEnumerator CheckNews()
