@@ -27,7 +27,7 @@ public class SquareView : AbstractView<Square>
     {
         RemoveCreatedSprite();
 
-        if (model.MoveAble.State)
+        if (model.MoveAble.Value)
         {
             choosedSquare.SetActive(true);
             createdSprite = choosedSquare;
@@ -39,7 +39,7 @@ public class SquareView : AbstractView<Square>
     private void ViewMarked()
     {
         RemoveCreatedSprite();
-        if (model.Marked.State)
+        if (model.Marked.Value)
         {
             choosedPiece.SetActive(true);
             createdSprite = choosedPiece;

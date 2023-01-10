@@ -2,20 +2,20 @@
 
 namespace chess_shared.Model
 {
-    public class EventableBool
+    public class EventableBool<T>
     {
-        private bool _state;
+        private T _value;
         public event Action StateChanged;
 
-        public bool State
+        public T Value
         {
-            get => _state;
+            get => _value;
 
             set
             {
-                if (_state != value)
+                if (!Equals(value, _value))
                 {
-                    _state = value;
+                    _value = value;
                     StateChanged?.Invoke();
                 }
             }

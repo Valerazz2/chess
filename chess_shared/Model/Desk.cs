@@ -75,7 +75,7 @@ namespace Chess.Model
                 return;
             }
             
-            piece.Square.Marked.State = true;
+            piece.Square.Marked.Value = true;
             var wantTakeOnThePass = piece.GetPieceType() == PieceType.Pawn &&
                                     Math.Abs(piece.Square.Pos.X - target.Pos.X) == 1 && target.Piece == null;
 
@@ -115,7 +115,7 @@ namespace Chess.Model
             
             prevMove.MovedFrom = eventInfo.MovedFrom;
             prevMove.Piece = piece;
-            piece.Square.Marked.State = true;
+            piece.Square.Marked.Value = true;
         }
 
         private bool WantCastling(Square target, Piece piece)
@@ -280,18 +280,18 @@ namespace Chess.Model
             ResetTiles(false);
             foreach (var square in Squares)
             {
-                square.MoveAble.State = piece.AbleMoveTo(square) && piece.TryMoveSuccess(square);
+                square.MoveAble.Value = piece.AbleMoveTo(square) && piece.TryMoveSuccess(square);
             }
 
-            piece.Square.Marked.State = true;
+            piece.Square.Marked.Value = true;
         }
         
         private void ResetTiles(bool moveAble)
         {
             foreach (var square in Squares)
             {
-                square.MoveAble.State = moveAble;
-                square.Marked.State = false;
+                square.MoveAble.Value= moveAble;
+                square.Marked.Value = false;
             }
         }
     }
