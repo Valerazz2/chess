@@ -10,8 +10,8 @@ namespace Chess.Model
         public Piece Piece;
         private bool _moveAble;
         private bool _marked;
-        public EventableBool<bool> Marked = new();
-        public EventableBool<bool> MoveAble = new();
+        public Holder<bool> Marked = new();
+        public Holder<bool> MoveAble = new();
 
         
 

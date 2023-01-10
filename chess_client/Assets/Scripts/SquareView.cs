@@ -23,11 +23,11 @@ public class SquareView : AbstractView<Square>
         transform.position = model.GetPosVector3();
     }
 
-    private void ViewMovable()
+    private void ViewMovable(bool value, bool oldValue)
     {
         RemoveCreatedSprite();
 
-        if (model.MoveAble.Value)
+        if (value)
         {
             choosedSquare.SetActive(true);
             createdSprite = choosedSquare;
@@ -36,10 +36,10 @@ public class SquareView : AbstractView<Square>
         }
     }
 
-    private void ViewMarked()
+    private void ViewMarked(bool value, bool oldValue)
     {
         RemoveCreatedSprite();
-        if (model.Marked.Value)
+        if (value)
         {
             choosedPiece.SetActive(true);
             createdSprite = choosedPiece;
