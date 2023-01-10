@@ -15,8 +15,8 @@ public class SquareView : AbstractView<Square>
 
     protected override void OnBind()
     {
-        model.MoveAbleChanged += ViewMovable;
-        model.MarkedChanged += ViewMarked;
+        model.MoveAble.StateChanged += ViewMovable;
+        model.Marked.StateChanged += ViewMarked;
         
         var sprite = model.Color == ChessColor.White ? whiteSquare : blackSquare;
         SpriteRenderer.sprite = sprite;
@@ -27,7 +27,7 @@ public class SquareView : AbstractView<Square>
     {
         RemoveCreatedSprite();
 
-        if (model.MoveAble)
+        if (model.MoveAble.State)
         {
             choosedSquare.SetActive(true);
             createdSprite = choosedSquare;
@@ -39,7 +39,7 @@ public class SquareView : AbstractView<Square>
     private void ViewMarked()
     {
         RemoveCreatedSprite();
-        if (model.Marked)
+        if (model.Marked.State)
         {
             choosedPiece.SetActive(true);
             createdSprite = choosedPiece;

@@ -1,4 +1,5 @@
 using System;
+using chess_shared.Model;
 
 namespace Chess.Model
 {
@@ -9,34 +10,10 @@ namespace Chess.Model
         public Piece Piece;
         private bool _moveAble;
         private bool _marked;
-        public bool Marked
-        {
-            get => _marked;
-            internal set
-            {
-                if (_marked != value)
-                {
-                    _marked = value;
-                    MarkedChanged?.Invoke();
-                }
-            }
-        }
+        public EventableBool Marked = new();
+        public EventableBool MoveAble = new();
 
-        public bool MoveAble
-        {
-            get => _moveAble;
-            internal set
-            {
-                if (value != _moveAble)
-                {
-                    _moveAble = value;
-                    MoveAbleChanged?.Invoke();
-                }
-            }
-        }
-
-        public event Action MoveAbleChanged;
-        public event Action MarkedChanged;
+        
 
         public Square(Vector2Int pos, ChessColor color, Piece piece, Desk desk) : base(desk)
         {
