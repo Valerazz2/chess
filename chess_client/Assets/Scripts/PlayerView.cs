@@ -20,6 +20,6 @@ public class PlayerView : AbstractView<Player>
 
     protected override void OnBind()
     {
-        model.NewPieceTypeCaptured += CreateNewPieceView;
+        model.capturedPieces.ObjectAdded += CreateNewPieceView;
     }
 }

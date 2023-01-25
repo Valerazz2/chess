@@ -1,20 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Model;
 
 namespace Chess.Model
 {
     public class Player
     {
-        private readonly List<PieceClone> capturedPieces = new();
-        private ChessColor color;
+        public readonly ObservableList<PieceClone> capturedPieces = new();
 
-        public event Action<PieceClone> NewPieceTypeCaptured;
+        private ChessColor color;
 
         private int GetCapturedValue()
         {
             int value = 0;
-            foreach (var pieceTypeClone in capturedPieces)
+            foreach (var pieceTypeClone in capturedPieces.List)
             {
                 value += pieceTypeClone.Count * pieceTypeClone.PieceType.GetPrice();
             }
@@ -33,7 +33,7 @@ namespace Chess.Model
             {
                 return;
             }
-            foreach (var pieceClone in capturedPieces)
+            foreach (var pieceClone in capturedPieces.List)
             {
                 if (pieceClone.PieceType == piece.GetPieceType())
                 {
@@ -44,7 +44,6 @@ namespace Chess.Model
 
             var newPieceClone = new PieceClone(color.Invert(), piece.GetPieceType());
             capturedPieces.Add(newPieceClone);
-            NewPieceTypeCaptured?.Invoke(newPieceClone);
         }
     }
 }
