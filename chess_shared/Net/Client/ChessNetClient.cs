@@ -38,9 +38,9 @@ namespace Net
                 });
             }
         }
-        public async Task Join()
+        public async Task Join(JoinArgs joinArgs)
         {
-            joinResult = await httpClient.Join();
+            joinResult = await httpClient.Join(joinArgs);
         }
 
         public async Task CheckNews()

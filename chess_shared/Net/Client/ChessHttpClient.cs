@@ -27,9 +27,9 @@ namespace chess_shared.Net
             return result;
         }
 
-        public async Task<JoinResult> Join()
+        public async Task<JoinResult> Join(JoinArgs args)
         {
-            return await Query<JoinResult, object>(nameof(Join), null);
+            return await Query<JoinResult, object>(nameof(Join), args);
         }
 
         public async Task<MoveResult> MovePiece(MovePieceArgs args)

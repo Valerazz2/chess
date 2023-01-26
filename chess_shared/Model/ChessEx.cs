@@ -77,7 +77,7 @@ namespace Chess.Model
 
         private void Castle(int x)
         {
-            var king = Desk.FindKing(Desk.move);
+            var king = Desk.FindKing(Desk.Move);
             var target = Desk.GetSquareAt(king.Square.Pos + new Vector2Int(x, 0));
             Desk.MoveTo(king, target);
         }
@@ -106,7 +106,7 @@ namespace Chess.Model
             foreach (var piece in Desk.GetAllPiece())
             {
                 var type = GetTypeFor(a);
-                if (piece.GetPieceType() == type && piece.Color == Desk.move && piece.AbleMoveTo(target) && piece.TryMoveSuccess(target))
+                if (piece.GetPieceType() == type && piece.Color == Desk.Move && piece.AbleMoveTo(target) && piece.TryMoveSuccess(target))
                 {
                     fitsPieces.Add(piece);
                 }

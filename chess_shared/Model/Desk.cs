@@ -11,7 +11,7 @@ namespace Chess.Model
         public static readonly int DeskSizeX = 8, DeskSizeY = 8;
         public IEnumerable<Square> ISquares => Squares.Cast<Square>(); 
         
-        public ChessColor move = ChessColor.White;
+        public ChessColor Move = ChessColor.White;
 
         private readonly Square[,] Squares = new Square[DeskSizeX, DeskSizeY];
         
@@ -79,7 +79,7 @@ namespace Chess.Model
             var wantTakeOnThePass = piece.GetPieceType() == PieceType.Pawn &&
                                     Math.Abs(piece.Square.Pos.X - target.Pos.X) == 1 && target.Piece == null;
 
-            move = move.Invert();
+            Move = Move.Invert();
             
             if (WantCastling(target, piece))
             {
@@ -95,7 +95,7 @@ namespace Chess.Model
             
             var eventInfo = new MoveInfo
             {
-                MoveColor = move.Invert(),
+                MoveColor = Move.Invert(),
                 Piece = piece,
                 MovedFrom = piece.Square,
             };
@@ -234,14 +234,14 @@ namespace Chess.Model
 
         public void Select(Square square, ChessColor color)
         {
-            if (color != move)
+            if (color != Move)
             {
                 return;
             }
             switch (ChessState)
             {
                 case ChessState.PieceNull:
-                    if (square.IsPieceOfColor(move))
+                    if (square.IsPieceOfColor(Move))
                     {
                         CurrentPiece = square.Piece;
                         SetMoveAbleSquaresFor(CurrentPiece);
@@ -250,12 +250,12 @@ namespace Chess.Model
                     break;
                 
                 case ChessState.PieceChoosed:
-                    if (square.IsPieceOfColor(move))
+                    if (square.IsPieceOfColor(Move))
                     {
                         CurrentPiece = square.Piece;
                         SetMoveAbleSquaresFor(CurrentPiece);
                     }
-                    else if (CurrentPiece.Color == move)
+                    else if (CurrentPiece.Color == Move)
                     {
                         MoveTo(CurrentPiece, square);
                     }

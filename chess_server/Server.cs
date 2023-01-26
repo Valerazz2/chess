@@ -32,7 +32,23 @@ namespace Chess.Model
 
         public JoinResult Join(JoinArgs args)
         {
-            lock (_joinLock)
+            var gameWBot = new ChessGame();
+            var playerColor = ChessColor.White;
+            var realPlayer = new ServerPlayer(gameWBot, playerColor);
+            lock (_dictionary)
+            {
+                _dictionary.Add(realPlayer.ID, realPlayer);
+            }
+
+            var chessServerBot = new ChessServerBot(gameWBot, ChessColor.Black);
+            gameWBot.PlayerWhite = realPlayer;
+            realPlayer.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
+            return new JoinResult
+            {
+                Sid = realPlayer.ID,
+                Color = realPlayer.Color
+            };
+            /*lock (_joinLock)
             {
                 var game = _waitingPlayer == null ? new ChessGame() : _waitingPlayer.game;
                 var color = _waitingPlayer == null ? ChessColor.White : ChessColor.Black;
@@ -61,7 +77,7 @@ namespace Chess.Model
                     Sid = player.ID,
                     Color = player.Color
                 };
-            }
+            }*/
         }
 
         public MoveResult MovePiece(MovePieceArgs args)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using chess_shared.Net;
 using Chess.Model;
 using Net;
 using UnityEngine;
@@ -10,10 +11,23 @@ public class NetView : MonoBehaviour
     [SerializeField] private DeskView deskView;
     public ChessNetClient ChessNetClient;
 
-    public async void Join()
+    public async void JoinVsPlayer()
+    {
+        Join(GameMode.RealEnemy);
+    }
+
+    public async void JoinVsBot()
+    {
+        Join(GameMode.ServerBot);
+    }
+
+    private async void Join(GameMode gameMode)
     {
         ChessNetClient = deskView.ChessNetClient;
-        await ChessNetClient.Join();
+        await ChessNetClient.Join(new JoinArgs()
+        {
+            GameMode = gameMode
+        });
         GetComponent<UserInput>().UserColor = ChessNetClient.Color;
         if (ChessNetClient.Color == ChessColor.Black)
         {

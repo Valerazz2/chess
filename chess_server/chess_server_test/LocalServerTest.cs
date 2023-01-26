@@ -34,7 +34,7 @@ public class LocalServerTest
         Assert.AreEqual(ChessColor.Black, joinB.Color);
         Assert.True(Server.GameCount == 2);
         var playerWhite = Server.GetPlayer(joinW.Sid);
-        Assert.True(playerWhite.game.Desk.move == ChessColor.White);
+        Assert.True(playerWhite.game.Desk.Move == ChessColor.White);
         var playerBlack = Server.GetPlayer(joinB.Sid);
         Assert.True(playerBlack.NewsForClient.Count == 0);
         Server.MovePiece(new MovePieceArgs
@@ -43,7 +43,7 @@ public class LocalServerTest
             MovedFrom = "e2",
             MovedTo = "e4"
         });
-        Assert.True(playerWhite.game.Desk.move == ChessColor.Black);
+        Assert.True(playerWhite.game.Desk.Move == ChessColor.Black);
         Assert.True(playerBlack.NewsForClient.Count == 1);
         var New=Server.AskNews(new AskNewsArgs
         {
@@ -55,7 +55,7 @@ public class LocalServerTest
         Assert.True(news.MovedFrom == "e2");
         Assert.True(news.MovedTo == "e4");
         Assert.True(playerBlack.NewsForClient.Count == 0);
-        Assert.True(playerBlack.game.Desk.move == ChessColor.Black);
+        Assert.True(playerBlack.game.Desk.Move == ChessColor.Black);
         Assert.True(Server.GetPlayer(joinB.Sid) != null);
         Assert.True(Server.GameCount == 2);
     }
