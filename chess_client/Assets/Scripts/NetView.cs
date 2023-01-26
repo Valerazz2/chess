@@ -8,15 +8,16 @@ using UnityEngine;
 public class NetView : MonoBehaviour
 {
     [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject playButton2;
     [SerializeField] private DeskView deskView;
     public ChessNetClient ChessNetClient;
 
-    public async void JoinVsPlayer()
+    public void JoinVsPlayer()
     {
         Join(GameMode.RealEnemy);
     }
 
-    public async void JoinVsBot()
+    public void JoinVsBot()
     {
         Join(GameMode.ServerBot);
     }
@@ -36,6 +37,7 @@ public class NetView : MonoBehaviour
         }
         StartCoroutine(CheckNews());
         playButton.SetActive(false);
+        playButton2.SetActive(false);
     }
     
     private IEnumerator CheckNews()

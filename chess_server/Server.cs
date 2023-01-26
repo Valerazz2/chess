@@ -32,52 +32,58 @@ namespace Chess.Model
 
         public JoinResult Join(JoinArgs args)
         {
-            var gameWBot = new ChessGame();
-            var playerColor = ChessColor.White;
-            var realPlayer = new ServerPlayer(gameWBot, playerColor);
-            lock (_dictionary)
+            switch (args.GameMode)
             {
-                _dictionary.Add(realPlayer.ID, realPlayer);
+                case GameMode.RealEnemy:
+                    lock (_joinLock)
+                    {
+                        var game = _waitingPlayer == null ? new ChessGame() : _waitingPlayer.game;
+                        var color = _waitingPlayer == null ? ChessColor.White : ChessColor.Black;
+                        var player = new ServerPlayer(game, color);
+                        lock (_dictionary)
+                        {
+                            _dictionary.Add(player.ID, player);
+                        }
+                        if (_waitingPlayer == null)
+                        {
+                            _waitingPlayer = player;
+                            game.PlayerWhite = player;
+                        }
+                        else
+                        {
+                            _waitingPlayer = null;
+                            game.PlayerBlack = player;
+                        }
+
+                        if (player.Color == ChessColor.Black)
+                        {
+                            player.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
+                        }
+                        return new JoinResult
+                        {
+                            Sid = player.ID,
+                            Color = player.Color
+                        };
+                    }
+                case GameMode.ServerBot:
+                    var gameWBot = new ChessGame();
+                    var playerColor = ChessColor.White;
+                    var realPlayer = new ServerPlayer(gameWBot, playerColor);
+                    lock (_dictionary)
+                    {
+                        _dictionary.Add(realPlayer.ID, realPlayer);
+                    }
+
+                    var chessServerBot = new ChessServerBot(gameWBot, ChessColor.Black);
+                    gameWBot.PlayerWhite = realPlayer;
+                    realPlayer.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
+                    return new JoinResult
+                    {
+                        Sid = realPlayer.ID,
+                        Color = realPlayer.Color
+                    };
             }
-
-            var chessServerBot = new ChessServerBot(gameWBot, ChessColor.Black);
-            gameWBot.PlayerWhite = realPlayer;
-            realPlayer.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
-            return new JoinResult
-            {
-                Sid = realPlayer.ID,
-                Color = realPlayer.Color
-            };
-            /*lock (_joinLock)
-            {
-                var game = _waitingPlayer == null ? new ChessGame() : _waitingPlayer.game;
-                var color = _waitingPlayer == null ? ChessColor.White : ChessColor.Black;
-                var player = new ServerPlayer(game, color);
-                lock (_dictionary)
-                {
-                    _dictionary.Add(player.ID, player);
-                }
-                if (_waitingPlayer == null)
-                {
-                    _waitingPlayer = player;
-                    game.PlayerWhite = player;
-                }
-                else
-                {
-                    _waitingPlayer = null;
-                    game.PlayerBlack = player;
-                }
-
-                if (player.Color == ChessColor.Black)
-                {
-                    player.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
-                }
-                return new JoinResult
-                {
-                    Sid = player.ID,
-                    Color = player.Color
-                };
-            }*/
+            return new JoinResult();
         }
 
         public MoveResult MovePiece(MovePieceArgs args)

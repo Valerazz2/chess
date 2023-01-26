@@ -17,9 +17,9 @@ public class ChessHttpClientTest
     public async Task SimpleJoinTest()
     {
         var client = new ChessHttpClient();
-        var whiteJoinResult = await client.Join();
+        var whiteJoinResult = await client.Join(new JoinArgs{GameMode = GameMode.RealEnemy});
         Assert.True(whiteJoinResult.Color == ChessColor.White);
-        var blackJoinResult = await client.Join();
+        var blackJoinResult = await client.Join(new JoinArgs{GameMode = GameMode.RealEnemy});
         Assert.True(blackJoinResult.Color == ChessColor.Black);
         await client.MovePiece(new MovePieceArgs()
         {
