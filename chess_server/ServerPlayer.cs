@@ -10,8 +10,6 @@ namespace Chess.Model
         public readonly List<News> NewsForClient = new();
         
         public readonly ChessColor Color;
-        
-        public readonly string ID = Guid.NewGuid().ToString();
 
         public readonly ChessGame game;
 

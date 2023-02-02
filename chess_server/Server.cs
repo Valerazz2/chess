@@ -29,7 +29,6 @@ namespace Chess.Model
         private Server()
         {
         }
-
         public JoinResult Join(JoinArgs args)
         {
             switch (args.GameMode)
@@ -42,7 +41,7 @@ namespace Chess.Model
                         var player = new ServerPlayer(game, color);
                         lock (_dictionary)
                         {
-                            _dictionary.Add(player.ID, player);
+                            _dictionary.Add(args.PlayerId, player);
                         }
                         if (_waitingPlayer == null)
                         {
@@ -61,7 +60,6 @@ namespace Chess.Model
                         }
                         return new JoinResult
                         {
-                            Sid = player.ID,
                             Color = player.Color
                         };
                     }
@@ -71,7 +69,7 @@ namespace Chess.Model
                     var realPlayer = new ServerPlayer(gameWBot, playerColor);
                     lock (_dictionary)
                     {
-                        _dictionary.Add(realPlayer.ID, realPlayer);
+                        _dictionary.Add(args.PlayerId, realPlayer);
                     }
 
                     var chessServerBot = new ChessServerBot(gameWBot, ChessColor.Black);
@@ -79,7 +77,6 @@ namespace Chess.Model
                     realPlayer.game.PlayerWhite?.NewsForClient.Add(new EnemyJoined());
                     return new JoinResult
                     {
-                        Sid = realPlayer.ID,
                         Color = realPlayer.Color
                     };
             }

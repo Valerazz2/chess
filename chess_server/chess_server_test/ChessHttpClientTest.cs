@@ -21,12 +21,7 @@ public class ChessHttpClientTest
         Assert.True(whiteJoinResult.Color == ChessColor.White);
         var blackJoinResult = await client.Join(new JoinArgs{GameMode = GameMode.RealEnemy});
         Assert.True(blackJoinResult.Color == ChessColor.Black);
-        await client.MovePiece(new MovePieceArgs()
-        {
-            Sid = whiteJoinResult.Sid,
-            MovedFrom = "e2",
-            MovedTo = "e4"
-        });
+     
         
         
     }

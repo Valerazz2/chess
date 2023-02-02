@@ -3,5 +3,6 @@
     public class JoinArgs
     {
         public GameMode GameMode;
+        public string PlayerId;
     }
 }

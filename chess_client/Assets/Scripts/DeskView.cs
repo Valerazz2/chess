@@ -16,16 +16,32 @@ public class DeskView : AbstractView<Desk>
     public ChessNetClient ChessNetClient;
     private Desk desk;
 
-    private void Start()
+    private async void Start()
     {
-        TaskScheduler.UnobservedTaskException +=
-            (_, e) => Debug.LogException(e.Exception);
         desk = new Desk();
         desk.CreateMap();
-        ChessNetClient = new ChessNetClient(desk);
+
+        TaskScheduler.UnobservedTaskException +=
+            (_, e) => Debug.LogException(e.Exception);
+        var id = PlayerPrefs.GetString("PlayerId", null);
+        if (id == null)
+        {
+            PlayerPrefs.SetString("PlayerId", Guid.NewGuid().ToString());
+        }
+        ChessNetClient = new ChessNetClient(desk, id);
+        if (await PlayerInGame(id))
+        {
+            Desk desk = ChessNetClient.GetDeskFor(id);
+        }
         netView.ChessNetClient = ChessNetClient;
         ChessNetClient.EnemyJoined += BuildMap;
     }
+
+    private async Task<bool> PlayerInGame(string id)
+    {
+        return await ChessNetClient.InGame(id);
+    }
+    
     protected override void OnBind()
     {
         CreateViews(model.ISquares, squareViewPrefab, transform);
@@ -40,7 +56,7 @@ public class DeskView : AbstractView<Desk>
             RotatePieces(0);
         }
         CreateViews(model.GetAllPiece(), pieceViewPrefab, transform);
-        model.OnPieceAdd += CreateView2;
+        model.Pieces.ObjectAdded += CreateView2;
     }
 
     private void SetModelForPlayerViews(PlayerView player1, PlayerView player2)

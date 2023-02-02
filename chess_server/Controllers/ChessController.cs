@@ -4,7 +4,6 @@ using Chess.Model;
 using Microsoft.AspNetCore.Mvc;
 using Net;
 using Newtonsoft.Json;
-using JsonSerializer = chess_shared.Net.JsonSerializer;
 
 namespace chess_server.Controllers;
 
@@ -18,25 +17,31 @@ public class ChessController : Controller
     {
     }
 
+    public string InGame([FromBody] JsonElement args)
+    {
+        var id = ChessJsonSerializer.DeserializeObj<string>(args.ToString());
+        var result = Server.FindPlayer(id);
+        return ChessJsonSerializer.SerializeObj(result);
+    }
     public string Join([FromBody] JsonElement args)
     {
-        var joinArgs = JsonSerializer.DeserializeObj<JoinArgs>(args.ToString());
+        var joinArgs = ChessJsonSerializer.DeserializeObj<JoinArgs>(args.ToString());
         var result = Server.Join(joinArgs);
-        var ret = JsonSerializer.SerializeObj(result);
+        var ret = ChessJsonSerializer.SerializeObj(result);
         log.Info("Join:result:" + ret);
         return ret;
     }
     
     public string MovePiece([FromBody] JsonElement args)
     {
-        var movePieceArgs = JsonSerializer.DeserializeObj<MovePieceArgs>(args.ToString());
+        var movePieceArgs = ChessJsonSerializer.DeserializeObj<MovePieceArgs>(args.ToString());
         Server.MovePiece(movePieceArgs);
-        return JsonSerializer.SerializeObj(new MoveResult());
+        return ChessJsonSerializer.SerializeObj(new MoveResult());
     }
 
     public string AskNews([FromBody] JsonElement args)
     {
-        var askNewsArgs = JsonSerializer.DeserializeObj<AskNewsArgs>(args.ToString());
+        var askNewsArgs = ChessJsonSerializer.DeserializeObj<AskNewsArgs>(args.ToString());
         if (askNewsArgs.NewsID.Count > 0)
         {
             var player = Server.GetPlayer(askNewsArgs.Sid);
@@ -46,7 +51,7 @@ public class ChessController : Controller
         {
             Sid = askNewsArgs.Sid
         });
-        var result = JsonSerializer.SerializeObj(askNewsResult);
+        var result = ChessJsonSerializer.SerializeObj(askNewsResult);
         return result;
     }
 }

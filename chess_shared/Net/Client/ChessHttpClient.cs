@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Chess.Model;
 using Chess.Server;
 using Net;
 using Newtonsoft.Json;
@@ -18,12 +19,12 @@ namespace chess_shared.Net
         private async Task<TResult> Query<TResult, TArgs>(string method, TArgs args) where TArgs : class
         {
             var url = EndPoint + method;
-            var argsJson = args == null ? "" : JsonSerializer.SerializeObj(args);
+            var argsJson = args == null ? "" : ChessJsonSerializer.SerializeObj(args);
             var data = new StringContent(argsJson, Encoding.UTF8, "text/json");
             HttpResponseMessage response = await _client.PostAsync(url, data);
             var responseJson = await response.Content.ReadAsStringAsync();
             response.Dispose();
-            var result = JsonSerializer.DeserializeObj<TResult>(responseJson);
+            var result = ChessJsonSerializer.DeserializeObj<TResult>(responseJson);
             return result;
         }
 
@@ -40,6 +41,16 @@ namespace chess_shared.Net
         public async Task<AskNewsResult> AskNews(AskNewsArgs args)
         {
             return await Query<AskNewsResult, object>(nameof(AskNews), args);
+        }
+
+        public async Task<bool> InGame(string id)
+        {
+            return await Query<bool, object>(nameof(InGame), id);
+        }
+
+        public async Task<Desk> GetDeskFor(string id)
+        {
+            return await Query<Desk, object>(nameof(GetDeskFor), id);
         }
     }
 }

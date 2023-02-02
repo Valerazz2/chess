@@ -16,12 +16,14 @@ namespace Net
         public JoinResult joinResult;
         
         public ChessColor Color => joinResult.Color;
-        public string CurrentSid => joinResult.Sid;
+        
+        public readonly string CurrentSid;
         public event Action EnemyJoined;
 
         private List<string> appliedNewsId = new();
-        public ChessNetClient(Desk desk)
+        public ChessNetClient(Desk desk, string playerSid)
         {
+            CurrentSid = playerSid;
             this.desk = desk;
             desk.OnServerMove += OnMove;
         }
@@ -30,7 +32,7 @@ namespace Net
         {
             if (Color == moveInfo.MoveColor)
             {
-                MoveResult moveResult = await httpClient.MovePiece(new MovePieceArgs
+                var moveResult = await httpClient.MovePiece(new MovePieceArgs
                 {
                     Sid = CurrentSid,
                     MovedFrom = moveInfo.MovedFrom.GetRef(),
@@ -43,6 +45,10 @@ namespace Net
             joinResult = await httpClient.Join(joinArgs);
         }
 
+        public async Task<bool> InGame(string id)
+        {
+            return await httpClient.InGame(id);
+        }
         public async Task CheckNews()
         {
             var news = await httpClient.AskNews(new AskNewsArgs
@@ -72,6 +78,11 @@ namespace Net
                     appliedNewsId.Add(New.ID);
                 }
             }
+        }
+
+        public Desk GetDeskFor(string id)
+        {
+            return null;// httpClient.GetDeskFor(id);
         }
     }
 }

@@ -17,5 +17,11 @@ namespace Chess.Model
         {
             return color == ChessColor.White ? Vector2Int.Up : Vector2Int.Down;
         }
+
+        public static char ToChar(this ChessColor color)
+        {
+            return color == ChessColor.White ? 'w' : 'b';
+        }
+        
     }
 }

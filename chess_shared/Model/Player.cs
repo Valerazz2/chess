@@ -8,7 +8,7 @@ namespace Chess.Model
     public class Player
     {
         public readonly ObservableList<PieceClone> capturedPieces = new();
-
+        
         private ChessColor color;
 
         private int GetCapturedValue()

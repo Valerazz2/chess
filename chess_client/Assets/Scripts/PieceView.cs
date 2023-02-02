@@ -15,7 +15,7 @@ namespace Chess.View
             transform.localPosition = model.Square.GetPosVector3();
 
             model.Desk.OnMove += OnFigureMoved;
-            model.Desk.OnPieceRemove += OnFigureRemoved;
+            model.Desk.Pieces.ObjectRemoved += OnFigureRemoved;
         }
         
         private void OnFigureRemoved(Piece obj)

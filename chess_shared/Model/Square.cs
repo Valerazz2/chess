@@ -1,5 +1,6 @@
-using System;
 using chess_shared.Model;
+using Newtonsoft.Json;
+using Net.Json;
 
 namespace Chess.Model
 {
@@ -7,13 +8,11 @@ namespace Chess.Model
     {
         public readonly Vector2Int Pos;
         public readonly ChessColor Color;
-        public Piece Piece;
+        [JsonIgnore] public Piece Piece;
         private bool _moveAble;
         private bool _marked;
         public Holder<bool> Marked = new();
         public Holder<bool> MoveAble = new();
-
-        
 
         public Square(Vector2Int pos, ChessColor color, Piece piece, Desk desk) : base(desk)
         {
@@ -21,7 +20,6 @@ namespace Chess.Model
             Color = color;
             Piece = piece;
         }
-        
 
         public void Select(ChessColor color)
         {

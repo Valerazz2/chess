@@ -2,32 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Chess.Model.Pieces;
+using Model;
+using Newtonsoft.Json;
 
 namespace Chess.Model
 {
     public class Desk
     {
-        
         public static readonly int DeskSizeX = 8, DeskSizeY = 8;
-        public IEnumerable<Square> ISquares => Squares.Cast<Square>(); 
+        [JsonIgnore] public IEnumerable<Square> ISquares => Squares.Cast<Square>(); 
         
         public ChessColor Move = ChessColor.White;
-
+        
         private readonly Square[,] Squares = new Square[DeskSizeX, DeskSizeY];
         
-        public Piece CurrentPiece { get; private  set; }
+        [JsonIgnore] public Piece CurrentPiece { get; set; }
 
         private ChessState ChessState = ChessState.PieceNull;
 
         public event Action<MoveInfo> OnMove;
-        public event Action<MoveInfo> OnServerMove; 
-        public event Action<Piece> OnPieceAdd;
-        public event Action<Piece> OnPieceRemove; 
+        public event Action<MoveInfo> OnServerMove;
         public event Action<Piece> OnPieceCaptured;
         
         public Player WhitePlayer, BlackPlayer;
 
-        public MoveInfo prevMove = new();
+        [JsonIgnore] public MoveInfo prevMove = new();
+
+        public readonly ObservableList<Piece> Pieces = new();
 
         public void CreateMap()
         {
@@ -48,18 +49,27 @@ namespace Chess.Model
                 for (var y = 0; y < DeskSizeY; y++)
                 {
                     var color = (x + y) % 2 == 0 ? ChessColor.Black : ChessColor.White;
-                    var fig = figuresSpots[x, y];
-                    var tile = Squares[x, y] = new Square(new Vector2Int(x, y), color, fig, this);
-                    if (fig != null)
+                    var piece = figuresSpots[x, y];
+                    var tile = Squares[x, y] = new Square(new Vector2Int(x, y), color, piece, this);
+                    if (piece != null)
                     {
-                        fig.Square = tile;
-                        fig.Color = y <= 2 ? ChessColor.White : ChessColor.Black;
+                        piece.Square = tile;
+                        piece.Color = y <= 2 ? ChessColor.White : ChessColor.Black;
+                        Pieces.Add(piece);
                     }
                 }
             }
-
             WhitePlayer = new Player(ChessColor.White, this);
             BlackPlayer = new Player(ChessColor.Black, this);
+        }
+
+        private void AddPiece(ChessColor color, PieceType type, Square square)
+        {
+            var piece = type.GetNewPieceByType(this);
+            piece.Color = color;
+            piece.Square = square;
+            square.Piece = piece;
+            Pieces.Add(piece);
         }
 
         public IEnumerable<Piece> GetAllPiece()
@@ -90,7 +100,7 @@ namespace Chess.Model
             if (target.Piece != null)
             {
                 OnPieceCaptured?.Invoke(target.Piece);
-                OnPieceRemove?.Invoke(target.Piece);
+                Pieces.Remove(target.Piece);
             }
             
             var eventInfo = new MoveInfo
@@ -110,7 +120,8 @@ namespace Chess.Model
             
             if (piece.GetPieceType() == PieceType.Pawn && piece.ReachedLastSquare())
             {
-                SetQueenAt(target, piece);
+               AddPiece(piece.Color, PieceType.Queen, piece.Square);
+               Pieces.Remove(piece);
             }
             
             prevMove.MovedFrom = eventInfo.MovedFrom;
@@ -129,20 +140,8 @@ namespace Chess.Model
             var deltaY = movedFrom.Pos.Y - piece.Square.Pos.Y;
             var square = GetSquareAt(piece.Square.Pos + new Vector2Int(0, deltaY));
             OnPieceCaptured?.Invoke(square.Piece);
-            OnPieceRemove?.Invoke(square.Piece);
+            Pieces.Remove(square.Piece);
             square.Piece = null;
-        }
-        private void SetQueenAt(Square target, Piece startPiece)
-        {
-            var queen = new Queen(this)
-            {
-                Color = startPiece.Color,
-                Square = startPiece.Square
-            };
-            SetPieceAt(target, queen);
-                
-            OnPieceAdd?.Invoke(queen);
-            OnPieceRemove?.Invoke(startPiece);
         }
 
         public Piece FindKing(ChessColor color)
@@ -225,12 +224,6 @@ namespace Chess.Model
         {
             return GetSquareAt(new Vector2Int(pos[0] - 'a', pos[1] - '1'));
         }
-        
-        public void SetPieceAt(Square square, Piece piece)
-        {
-            square.Piece = piece;
-            piece.Square = square;
-        }
 
         public void Select(Square square, ChessColor color)
         {
@@ -274,7 +267,6 @@ namespace Chess.Model
             }
             Select(GetSquareAt(new Vector2Int(x, y)), color);
         }
-
         private void SetMoveAbleSquaresFor(Piece piece)
         {
             ResetTiles(false);

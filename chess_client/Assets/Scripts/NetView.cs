@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using chess_shared.Net;
 using Chess.Model;
 using Net;
@@ -27,7 +26,8 @@ public class NetView : MonoBehaviour
         ChessNetClient = deskView.ChessNetClient;
         await ChessNetClient.Join(new JoinArgs()
         {
-            GameMode = gameMode
+            GameMode = gameMode,
+            PlayerId = PlayerPrefs.GetString("PlayerId")
         });
         GetComponent<UserInput>().UserColor = ChessNetClient.Color;
         if (ChessNetClient.Color == ChessColor.Black)
