@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Chess.Model;
 
 namespace Model
 {
@@ -229,7 +230,9 @@ namespace Model
 
         public bool Remove(T item)
         {
-            return _list.Remove(item);
+            var a = _list.Remove(item);
+            ObjectRemoved?.Invoke(item);
+            return a;
         }
 
         public int RemoveAll(Predicate<T> match)

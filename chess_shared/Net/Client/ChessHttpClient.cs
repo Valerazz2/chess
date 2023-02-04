@@ -43,11 +43,6 @@ namespace chess_shared.Net
             return await Query<AskNewsResult, object>(nameof(AskNews), args);
         }
 
-        public async Task<bool> InGame(string id)
-        {
-            return await Query<bool, object>(nameof(InGame), id);
-        }
-
         public async Task<Desk> GetDeskFor(string id)
         {
             return await Query<Desk, object>(nameof(GetDeskFor), id);

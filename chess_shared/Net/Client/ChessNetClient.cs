@@ -45,10 +45,6 @@ namespace Net
             joinResult = await httpClient.Join(joinArgs);
         }
 
-        public async Task<bool> InGame(string id)
-        {
-            return await httpClient.InGame(id);
-        }
         public async Task CheckNews()
         {
             var news = await httpClient.AskNews(new AskNewsArgs

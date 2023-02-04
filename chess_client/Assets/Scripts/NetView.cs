@@ -6,10 +6,9 @@ using UnityEngine;
 
 public class NetView : MonoBehaviour
 {
-    [SerializeField] private GameObject playButton;
-    [SerializeField] private GameObject playButton2;
+    [SerializeField] private GameObject startUi;
     [SerializeField] private DeskView deskView;
-    public ChessNetClient ChessNetClient;
+    private ChessNetClient ChessNetClient;
 
     public void JoinVsPlayer()
     {
@@ -36,8 +35,7 @@ public class NetView : MonoBehaviour
             deskView.transform.RotateAround(new Vector3(3.5f, 3.5f,0), Vector3.forward, 180);
         }
         StartCoroutine(CheckNews());
-        playButton.SetActive(false);
-        playButton2.SetActive(false);
+        startUi.SetActive(false);
     }
     
     private IEnumerator CheckNews()

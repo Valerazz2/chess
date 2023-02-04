@@ -9,39 +9,20 @@ public class DeskView : AbstractView<Desk>
 {
     [SerializeField] private SquareView squareViewPrefab;
     [SerializeField] private PieceView pieceViewPrefab;
-    [SerializeField] private NetView netView;
     [SerializeField] private PlayerView player1View;
     [SerializeField] private PlayerView player2View;
-    private SquareView choosedSquare;
+    [SerializeField] private UnityPlayer unityPlayer;
     public ChessNetClient ChessNetClient;
     private Desk desk;
 
-    private async void Start()
+    private void Start()
     {
         desk = new Desk();
         desk.CreateMap();
-
-        TaskScheduler.UnobservedTaskException +=
-            (_, e) => Debug.LogException(e.Exception);
-        var id = PlayerPrefs.GetString("PlayerId", null);
-        if (id == null)
-        {
-            PlayerPrefs.SetString("PlayerId", Guid.NewGuid().ToString());
-        }
-        ChessNetClient = new ChessNetClient(desk, id);
-        if (await PlayerInGame(id))
-        {
-            Desk desk = ChessNetClient.GetDeskFor(id);
-        }
-        netView.ChessNetClient = ChessNetClient;
+        ChessNetClient = new ChessNetClient(desk, PlayerPrefs.GetString("PlayerId"));
         ChessNetClient.EnemyJoined += BuildMap;
     }
 
-    private async Task<bool> PlayerInGame(string id)
-    {
-        return await ChessNetClient.InGame(id);
-    }
-    
     protected override void OnBind()
     {
         CreateViews(model.ISquares, squareViewPrefab, transform);
