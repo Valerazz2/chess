@@ -7,26 +7,23 @@ namespace chess_shared.Net
 
     public class ChessJsonSerializer
     {
-        public static readonly JsonSerializerSettings Settings_ = new JsonSerializerSettings
-            {TypeNameHandling = TypeNameHandling.Auto};
-        
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings(){
             Converters = new List<JsonConverter>()
             {
-                new JsonPieceConverter()
-            },    
+                new JsonDeskConverter()
+            },
             Formatting = Formatting.Indented,
             TypeNameHandling = TypeNameHandling.Auto
         };
 
-        public static TObjType DeserializeObj<TObjType>(string args)
+        public static TObjType Deserialize<TObjType>(string args)
         {
             return JsonConvert.DeserializeObject<TObjType>(args, Settings);
         }
         
-        public static void DeserializeObj<TObjType>(string args, TObjType tagret)
+        public static void Populate<TObjType>(string args, TObjType tagret)
         {
-            JsonConvert.PopulateObject(args, tagret);
+            JsonConvert.PopulateObject(args, tagret, Settings);
         }
 
         public static string SerializeObj(object obj)

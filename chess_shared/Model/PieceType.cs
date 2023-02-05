@@ -16,13 +16,34 @@ namespace Chess.Model
     public static class PieceTypeEx
     {
         private static readonly int[] PRICES = {1, 3, 3, 5, 8, 100000};
-        private static readonly char[] FirstChar = {'p', 'k', 'b', 'r', 'q', 'k'};
+        private static readonly char[] FirstChar = {'p', 'k', 'b', 'r', 'q', 'g'};
 
         public static int GetPrice(this PieceType pieceType)
         {
             return PRICES[(int)pieceType];
         }
 
+        public static PieceType GetPieceTypeByChar(char type)
+        {
+            switch (type)
+            {
+                case 'p':
+                    return PieceType.Pawn;
+                case 'k':
+                    return PieceType.Knight;
+                case 'b':
+                    return PieceType.Bishop;
+                case 'r':
+                    return PieceType.Rook;
+                case 'q':
+                    return PieceType.Queen;
+                case 'g':
+                    return PieceType.King;
+                default:
+                    throw new Exception("There is no pieceType by char" + type);
+            }
+        }
+        
         public static char ToChar(this PieceType pieceType)
         {
             return FirstChar[(int) pieceType];

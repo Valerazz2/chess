@@ -28,7 +28,7 @@ namespace Chess.Model
 
         [JsonIgnore] public MoveInfo prevMove = new();
 
-        public readonly ObservableList<Piece> Pieces = new();
+        public ObservableList<Piece> Pieces = new();
 
         public void CreateMap()
         {

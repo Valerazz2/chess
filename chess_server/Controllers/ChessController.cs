@@ -19,13 +19,13 @@ public class ChessController : Controller
 
     public string InGame([FromBody] JsonElement args)
     {
-        var id = ChessJsonSerializer.DeserializeObj<string>(args.ToString());
+        var id = ChessJsonSerializer.Deserialize<string>(args.ToString());
         var result = Server.FindPlayer(id);
         return ChessJsonSerializer.SerializeObj(result);
     }
     public string Join([FromBody] JsonElement args)
     {
-        var joinArgs = ChessJsonSerializer.DeserializeObj<JoinArgs>(args.ToString());
+        var joinArgs = ChessJsonSerializer.Deserialize<JoinArgs>(args.ToString());
         var result = Server.Join(joinArgs);
         var ret = ChessJsonSerializer.SerializeObj(result);
         log.Info("Join:result:" + ret);
@@ -34,14 +34,14 @@ public class ChessController : Controller
     
     public string MovePiece([FromBody] JsonElement args)
     {
-        var movePieceArgs = ChessJsonSerializer.DeserializeObj<MovePieceArgs>(args.ToString());
+        var movePieceArgs = ChessJsonSerializer.Deserialize<MovePieceArgs>(args.ToString());
         Server.MovePiece(movePieceArgs);
         return ChessJsonSerializer.SerializeObj(new MoveResult());
     }
 
     public string AskNews([FromBody] JsonElement args)
     {
-        var askNewsArgs = ChessJsonSerializer.DeserializeObj<AskNewsArgs>(args.ToString());
+        var askNewsArgs = ChessJsonSerializer.Deserialize<AskNewsArgs>(args.ToString());
         if (askNewsArgs.NewsID.Count > 0)
         {
             var player = Server.GetPlayer(askNewsArgs.Sid);

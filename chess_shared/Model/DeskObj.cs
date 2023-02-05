@@ -4,10 +4,9 @@ namespace Chess.Model
 {
     public class DeskObj
     {
-        [JsonIgnore]
         public Desk Desk { get;}
 
-        protected DeskObj(Desk getDesk)
+        public DeskObj(Desk getDesk)
         {
             Desk = getDesk;
         }

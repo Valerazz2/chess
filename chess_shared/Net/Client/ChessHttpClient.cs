@@ -24,7 +24,7 @@ namespace chess_shared.Net
             HttpResponseMessage response = await _client.PostAsync(url, data);
             var responseJson = await response.Content.ReadAsStringAsync();
             response.Dispose();
-            var result = ChessJsonSerializer.DeserializeObj<TResult>(responseJson);
+            var result = ChessJsonSerializer.Deserialize<TResult>(responseJson);
             return result;
         }
 

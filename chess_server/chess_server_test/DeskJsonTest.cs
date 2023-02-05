@@ -24,6 +24,9 @@ public class DeskJsonTest
         desk.CreateMap();
         var json = ChessJsonSerializer.SerializeObj(desk);
         Console.WriteLine(json);
+        var deskObj = new DeskObj(desk);
+        ChessJsonSerializer.Populate(json, deskObj);
+        Console.WriteLine(deskObj);
     }
     
 }
