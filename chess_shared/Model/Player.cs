@@ -16,7 +16,7 @@ namespace Chess.Model
             int value = 0;
             foreach (var pieceTypeClone in capturedPieces.List)
             {
-                value += pieceTypeClone.Count * pieceTypeClone.PieceType.GetPrice();
+                value +=  pieceTypeClone.Count.Value * pieceTypeClone.PieceType.GetPrice();
             }
             return value;
         }
@@ -37,7 +37,7 @@ namespace Chess.Model
             {
                 if (pieceClone.PieceType == piece.GetPieceType())
                 {
-                    pieceClone.Count++;
+                    pieceClone.Count.Value++;
                     return;
                 }
             }

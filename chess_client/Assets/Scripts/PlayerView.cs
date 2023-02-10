@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using chess_shared.Net;
 using Chess.Model;
 using Chess.View;
 using UnityEngine;

@@ -23,25 +23,11 @@ namespace Chess.Model
             return PRICES[(int)pieceType];
         }
 
-        public static PieceType GetPieceTypeByChar(char type)
+        public static PieceType FromChar(char type)
         {
-            switch (type)
-            {
-                case 'p':
-                    return PieceType.Pawn;
-                case 'k':
-                    return PieceType.Knight;
-                case 'b':
-                    return PieceType.Bishop;
-                case 'r':
-                    return PieceType.Rook;
-                case 'q':
-                    return PieceType.Queen;
-                case 'g':
-                    return PieceType.King;
-                default:
-                    throw new Exception("There is no pieceType by char" + type);
-            }
+            var index = Array.IndexOf(FirstChar, type);
+            if (index == -1) throw new Exception("There is no pieceType by char" + type);
+            return (PieceType)Enum.ToObject(typeof(PieceType), index);
         }
         
         public static char ToChar(this PieceType pieceType)

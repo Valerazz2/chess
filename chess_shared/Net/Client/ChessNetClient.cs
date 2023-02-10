@@ -75,10 +75,5 @@ namespace Net
                 }
             }
         }
-
-        public Desk GetDeskFor(string id)
-        {
-            return null;// httpClient.GetDeskFor(id);
-        }
     }
 }

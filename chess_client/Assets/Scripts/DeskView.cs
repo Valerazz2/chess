@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using chess_shared.Net;
 using Chess.Model;
 using Chess.View;
 using Net;
@@ -11,7 +12,6 @@ public class DeskView : AbstractView<Desk>
     [SerializeField] private PieceView pieceViewPrefab;
     [SerializeField] private PlayerView player1View;
     [SerializeField] private PlayerView player2View;
-    [SerializeField] private UnityPlayer unityPlayer;
     public ChessNetClient ChessNetClient;
     private Desk desk;
 
@@ -19,6 +19,7 @@ public class DeskView : AbstractView<Desk>
     {
         desk = new Desk();
         desk.CreateMap();
+        UnityPlayer.CheckOrSetGuid();
         ChessNetClient = new ChessNetClient(desk, PlayerPrefs.GetString("PlayerId"));
         ChessNetClient.EnemyJoined += BuildMap;
     }
@@ -58,5 +59,10 @@ public class DeskView : AbstractView<Desk>
     private void RotatePieces(float angle)
     {
         pieceViewPrefab.transform.rotation = new Quaternion(0,0,angle,0);
+    }
+
+    private void Update()
+    {
+        Debug.Log(ChessJsonSerializer.SerializeObj(model));
     }
 }

@@ -22,7 +22,7 @@ public class DeskJsonTest
     {
         var desk = new Desk();
         desk.CreateMap();
-        var json = ChessJsonSerializer.SerializeObj(desk);
+        var json = ChessJsonSerializer.SerializeObj(new DeskObj(desk));
         Console.WriteLine(json);
         var deskObj = new DeskObj(desk);
         ChessJsonSerializer.Populate(json, deskObj);

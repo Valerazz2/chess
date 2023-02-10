@@ -14,6 +14,11 @@
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest.JsonTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=52e2a6f4_002Dd1fe_002D4009_002Dbb63_002De5887aa23d91/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="JsonTest #7" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest.JsonTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=72bf06ea_002D752b_002D4f01_002Da14b_002Dda1b2d7517d1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="JsonTest #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest.JsonTest&lt;/TestId&gt;&#xD;
@@ -27,7 +32,7 @@
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest.JsonTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb1f818c_002D15e3_002D4047_002D9985_002Dedc1eda1586a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="JsonTest #6" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=bb1f818c_002D15e3_002D4047_002D9985_002Dedc1eda1586a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="JsonTest #6" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest.JsonTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
@@ -41,7 +46,7 @@
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c4086df9_002Dab8d_002D4b74_002D8528_002D0b77e02f9b43/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="JsonTest #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c4086df9_002Dab8d_002D4b74_002D8528_002D0b77e02f9b43/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="JsonTest #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::5E7F0BEE-D3DC-4E7F-A278-F26E8E8B3712::net6.0::chess_server_test.DeskJsonTest.JsonTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
