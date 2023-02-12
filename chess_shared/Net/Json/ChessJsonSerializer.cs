@@ -21,9 +21,9 @@ namespace chess_shared.Net
             return JsonConvert.DeserializeObject<TObjType>(args, Settings);
         }
         
-        public static void Populate<TObjType>(string args, TObjType tagret)
+        public static void Populate<TObjType>(string args, TObjType target)
         {
-            JsonConvert.PopulateObject(args, tagret, Settings);
+            JsonConvert.PopulateObject(args, target, Settings);
         }
 
         public static string SerializeObj(object obj)

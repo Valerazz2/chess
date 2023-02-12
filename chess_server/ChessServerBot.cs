@@ -17,6 +17,10 @@ public class ChessServerBot
 
     private void AnswerWithMove(MoveInfo moveInfo)
     {
+        if (game.Desk.MateFor(game.Desk.FindKing(color)) || game.Desk.StaleMateFor(color))
+        {
+            throw new Exception("Mate or staleMate");
+        }
         if (moveInfo.Piece.Color == color)
         {
             return;
@@ -30,7 +34,8 @@ public class ChessServerBot
             {
                 List<Square> ableMoveSquares = game.Desk.ISquares.Where(square => piece.AbleMoveTo(square) && piece.TryMoveSuccess(square)).ToList();
                 var randomSquare = ableMoveSquares[random.Next(ableMoveSquares.Count - 1)];
-                game.Desk.MoveTo(piece, randomSquare);
+                game.Desk.Select(piece.Square, color);
+                game.Desk.Select(randomSquare, color);
                 return;
             }
         }

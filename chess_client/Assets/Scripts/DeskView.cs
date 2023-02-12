@@ -20,8 +20,20 @@ public class DeskView : AbstractView<Desk>
         desk = new Desk();
         desk.CreateMap();
         UnityPlayer.CheckOrSetGuid();
+        var serializedDesk = PlayerPrefs.GetString("Desk");
+        if (!string.IsNullOrEmpty(serializedDesk))
+        {
+            ChessJsonSerializer.Populate(serializedDesk, desk);
+        }
         ChessNetClient = new ChessNetClient(desk, PlayerPrefs.GetString("PlayerId"));
         ChessNetClient.EnemyJoined += BuildMap;
+        desk.OnServerMove += SerializeDesk;
+    }
+
+    private void SerializeDesk(MoveInfo obj)
+    {
+        var serializedDesk = ChessJsonSerializer.SerializeObj(model);
+        PlayerPrefs.SetString("Desk", serializedDesk);
     }
 
     protected override void OnBind()
@@ -37,7 +49,7 @@ public class DeskView : AbstractView<Desk>
             SetModelForPlayerViews(player1View, player2View);
             RotatePieces(0);
         }
-        CreateViews(model.GetAllPiece(), pieceViewPrefab, transform);
+        CreateViews(model.Pieces.List, pieceViewPrefab, transform);
         model.Pieces.ObjectAdded += CreateView2;
     }
 
@@ -59,10 +71,5 @@ public class DeskView : AbstractView<Desk>
     private void RotatePieces(float angle)
     {
         pieceViewPrefab.transform.rotation = new Quaternion(0,0,angle,0);
-    }
-
-    private void Update()
-    {
-        Debug.Log(ChessJsonSerializer.SerializeObj(model));
     }
 }

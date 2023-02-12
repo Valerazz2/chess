@@ -72,11 +72,6 @@ namespace Chess.Model
             Pieces.Add(piece);
         }
 
-        public IEnumerable<Piece> GetAllPiece()
-        {
-            return (from Square square in Squares where square.Piece != null select square.Piece).ToList();
-        }
-
         public void MoveTo(Piece piece, Square target)
         {
             ResetTiles(false);

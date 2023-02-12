@@ -22,6 +22,10 @@ public class PlayerView : AbstractView<Player>
 
     protected override void OnBind()
     {
+        foreach (var pieceClone in model.capturedPieces.List)
+        {
+            CreateNewPieceView(pieceClone);
+        }
         model.capturedPieces.ObjectAdded += CreateNewPieceView;
     }
 }

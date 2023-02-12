@@ -12,7 +12,7 @@ namespace Net.Json
             writer.WriteStartObject();
             writer.WritePropertyName(nameof(value.Pieces));
             writer.WriteStartArray();
-            foreach(var piece in value.GetAllPiece())
+            foreach(var piece in value.Pieces.List)
             {
                 serializer.Serialize(writer, piece.Color.ToChar().ToString() + piece.GetPieceType().ToChar() + piece.Square.GetRef());
             }

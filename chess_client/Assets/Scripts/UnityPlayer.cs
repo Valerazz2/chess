@@ -13,12 +13,6 @@ public class UnityPlayer : MonoBehaviour
     {
         TaskScheduler.UnobservedTaskException +=
             (_, e) => Debug.LogException(e.Exception);
-
-        var serializedDesk = PlayerPrefs.GetString("Desk");
-        if (!string.IsNullOrEmpty(serializedDesk))
-        {
-            ChessJsonSerializer.Populate(PlayerPrefs.GetString("Desk"), new Desk());
-        }
     }
 
     public static void CheckOrSetGuid()

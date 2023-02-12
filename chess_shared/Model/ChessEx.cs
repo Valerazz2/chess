@@ -103,7 +103,7 @@ namespace Chess.Model
         private List<Piece> FindFitsPiecesFor(char a, Square target)
         {
             var fitsPieces = new List<Piece>();
-            foreach (var piece in Desk.GetAllPiece())
+            foreach (var piece in Desk.Pieces.List)
             {
                 var type = GetTypeFor(a);
                 if (piece.GetPieceType() == type && piece.Color == Desk.Move && piece.AbleMoveTo(target) && piece.TryMoveSuccess(target))
