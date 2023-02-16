@@ -16,7 +16,7 @@ namespace Chess.Model
         
         private readonly Square[,] Squares = new Square[DeskSizeX, DeskSizeY];
         
-        [JsonIgnore] public Piece CurrentPiece { get; set; }
+        public Piece CurrentPiece { get; set; }
 
         private ChessState ChessState = ChessState.PieceNull;
 
@@ -30,6 +30,17 @@ namespace Chess.Model
 
         public ObservableList<Piece> Pieces = new();
 
+        public void Clear()
+        {
+            Pieces.Clear();
+            BlackPlayer.capturedPieces.Clear();
+            WhitePlayer.capturedPieces.Clear();
+            foreach (var square in Squares)
+            {
+                square.Piece = null;
+            }
+        }
+        
         public void CreateMap()
         {
             var figuresSpots = new Piece[,]

@@ -11,13 +11,13 @@ public class CapturedPieceView : AbstractView<PieceClone>
     protected override void OnBind()
     {
         GetComponent<Image>().sprite = Resources.Load<Sprite>("pieces/" + model.PieceType + "_" + model.Color);
-        capturedPieceCountTxt.text = model.Count.ToString();
+        capturedPieceCountTxt.text = model.Count.Value.ToString();
         model.Count.ValueChanged += Display;
     }
 
     private void Display(int arg1, int arg2)
     {
-        capturedPieceCountTxt.text = model.Count.ToString();
+        capturedPieceCountTxt.text = model.Count.Value.ToString();
     }
 
     public void CreateViewFor(PieceClone pieceClone)

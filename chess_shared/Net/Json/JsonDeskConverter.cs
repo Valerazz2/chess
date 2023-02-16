@@ -22,15 +22,14 @@ namespace Net.Json
             writer.WriteStartArray();
             foreach (var pieceClone in value.BlackPlayer.capturedPieces.List)
             {
-                serializer.Serialize(writer, pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString());
+                serializer.Serialize(writer, pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString() + pieceClone.Color.ToChar());
             }
             writer.WriteEndArray();
             writer.WritePropertyName("WhiteCapturedPieces");
             writer.WriteStartArray();
             foreach (var pieceClone in value.WhitePlayer.capturedPieces.List)
             {
-                serializer.Serialize(writer, 
-                    pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString() + pieceClone.Color.ToChar());
+                serializer.Serialize(writer, pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString() + pieceClone.Color.ToChar());
             }
             writer.WriteEndArray();
             
@@ -97,6 +96,7 @@ namespace Net.Json
                             var piece = pieceType.GetNewPieceByType(value);
                             piece.Color = color;
                             piece.Square = square;
+                            square.Piece = piece;
                             value.Pieces.Add(piece);
                         }
                         reader.Read();

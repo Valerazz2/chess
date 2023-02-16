@@ -36,8 +36,22 @@ public class NetView : MonoBehaviour
         }
         StartCoroutine(CheckNews());
         startUi.SetActive(false);
+        var joinResult = ChessJsonSerializer.SerializeObj(ChessNetClient.joinResult);
+        PlayerPrefs.SetString("JoinResult", joinResult);
     }
-    
+
+    public void ConnectToGame()
+    {
+        ChessNetClient = deskView.ChessNetClient;
+        GetComponent<UserInput>().UserColor = ChessNetClient.Color;
+        deskView.BuildMap();
+        if (ChessNetClient.Color == ChessColor.Black)
+        {
+            deskView.transform.RotateAround(new Vector3(3.5f, 3.5f,0), Vector3.forward, 180);
+        }
+        StartCoroutine(CheckNews());
+        startUi.SetActive(false);
+    }
     private IEnumerator CheckNews()
     {
         while (true)

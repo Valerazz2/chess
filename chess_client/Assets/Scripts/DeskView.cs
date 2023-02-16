@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using chess_shared.Net;
 using Chess.Model;
+using Chess.Server;
 using Chess.View;
 using Net;
 using UnityEngine;
@@ -12,27 +13,32 @@ public class DeskView : AbstractView<Desk>
     [SerializeField] private PieceView pieceViewPrefab;
     [SerializeField] private PlayerView player1View;
     [SerializeField] private PlayerView player2View;
+    [SerializeField] private NetView netView;
     public ChessNetClient ChessNetClient;
     private Desk desk;
 
     private void Start()
     {
         desk = new Desk();
-        desk.CreateMap();
         UnityPlayer.CheckOrSetGuid();
+        ChessNetClient = new ChessNetClient(desk, PlayerPrefs.GetString("PlayerId"));
+        desk.CreateMap();
         var serializedDesk = PlayerPrefs.GetString("Desk");
         if (!string.IsNullOrEmpty(serializedDesk))
         {
-            ChessJsonSerializer.Populate(serializedDesk, desk);
+            desk.Clear();
+            var joinResult = PlayerPrefs.GetString("JoinResult");
+            ChessNetClient.joinResult = ChessJsonSerializer.Deserialize<JoinResult>(joinResult);
+            ChessJsonSerializer.Populate(serializedDesk, new DeskObj(desk));
+            netView.ConnectToGame();
         }
-        ChessNetClient = new ChessNetClient(desk, PlayerPrefs.GetString("PlayerId"));
         ChessNetClient.EnemyJoined += BuildMap;
         desk.OnServerMove += SerializeDesk;
     }
 
     private void SerializeDesk(MoveInfo obj)
     {
-        var serializedDesk = ChessJsonSerializer.SerializeObj(model);
+        var serializedDesk = ChessJsonSerializer.SerializeObj(new DeskObj(model));
         PlayerPrefs.SetString("Desk", serializedDesk);
     }
 
