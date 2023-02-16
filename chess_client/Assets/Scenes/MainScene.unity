@@ -708,6 +708,7 @@ MonoBehaviour:
   pieceViewPrefab: {fileID: 7063172786822182586, guid: cb1637b4bd1deaf4da161e33bcceb0af, type: 3}
   player1View: {fileID: 1859303556}
   player2View: {fileID: 70023108}
+  netView: {fileID: 2109483725}
 --- !u!4 &1383755461
 Transform:
   m_ObjectHideFlags: 0
