@@ -74,13 +74,14 @@ namespace Chess.Model
             BlackPlayer = new Player(ChessColor.Black, this);
         }
 
-        private void AddPiece(ChessColor color, PieceType type, Square square)
+        public Piece AddPiece(ChessColor color, PieceType type, Square square)
         {
             var piece = type.GetNewPieceByType(this);
             piece.Color = color;
             piece.Square = square;
             square.Piece = piece;
             Pieces.Add(piece);
+            return piece;
         }
 
         public void MoveTo(Piece piece, Square target)
@@ -108,31 +109,33 @@ namespace Chess.Model
                 OnPieceCaptured?.Invoke(target.Piece);
                 Pieces.Remove(target.Piece);
             }
-            
+
             var eventInfo = new MoveInfo
             {
                 MoveColor = Move.Invert(),
                 Piece = piece,
                 MovedFrom = piece.Square,
             };
-            piece.MoveTo(target);
-            OnServerMove?.Invoke(eventInfo);
-            OnMove?.Invoke(eventInfo);
-
-            if (wantTakeOnThePass)
-            {
-                OnTakeOnThePass(eventInfo.MovedFrom, piece);
-            }
             
+            piece.MoveTo(target);
+
             if (piece.GetPieceType() == PieceType.Pawn && piece.ReachedLastSquare())
             {
-               AddPiece(piece.Color, PieceType.Queen, piece.Square);
-               Pieces.Remove(piece);
+                AddPiece(piece.Color, PieceType.Queen, piece.Square);
+                Pieces.Remove(piece);
             }
             
             prevMove.MovedFrom = eventInfo.MovedFrom;
             prevMove.Piece = piece;
             piece.Square.Marked.Value = true;
+            
+            OnServerMove?.Invoke(eventInfo);
+            OnMove?.Invoke(eventInfo);
+            
+            if (wantTakeOnThePass)
+            {
+                OnTakeOnThePass(eventInfo.MovedFrom, piece);
+            }
         }
 
         private bool WantCastling(Square target, Piece piece)

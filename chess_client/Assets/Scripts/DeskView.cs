@@ -6,6 +6,7 @@ using Chess.Server;
 using Chess.View;
 using Net;
 using UnityEngine;
+using Random = System.Random;
 
 public class DeskView : AbstractView<Desk>
 {

@@ -29,11 +29,11 @@ public class ChessServerBot
         while (true)
         {
             Random random = new();
-            var piece = pieces[random.Next(pieces.Count - 1)];
+            var piece = pieces[random.Next(pieces.Count)];
             if (piece.AbleMoveAnyWhere())
             {
                 List<Square> ableMoveSquares = game.Desk.ISquares.Where(square => piece.AbleMoveTo(square) && piece.TryMoveSuccess(square)).ToList();
-                var randomSquare = ableMoveSquares[random.Next(ableMoveSquares.Count - 1)];
+                var randomSquare = ableMoveSquares[random.Next(ableMoveSquares.Count)];
                 game.Desk.Select(piece.Square, color);
                 game.Desk.Select(randomSquare, color);
                 return;

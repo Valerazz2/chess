@@ -15,7 +15,7 @@ namespace Chess.Model.Pieces
                 return CheckTile(target, Color);
             }
 
-            return dist == new Vector2Int(2, 0) && AbleCastling(target);
+            return !WasMoved && dist == new Vector2Int(2, 0) && AbleCastling(target);
         }
         private bool AbleCastling(Square target)
         {

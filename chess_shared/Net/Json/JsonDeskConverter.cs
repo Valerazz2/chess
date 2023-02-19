@@ -14,24 +14,15 @@ namespace Net.Json
             writer.WriteStartArray();
             foreach(var piece in value.Pieces.List)
             {
-                serializer.Serialize(writer, piece.Color.ToChar().ToString() + piece.GetPieceType().ToChar() + piece.Square.GetRef());
+                serializer.Serialize(writer, piece.Color.ToChar().ToString() + piece.GetPieceType().ToChar() + piece.Square.GetRef() + piece.WasMoved.ToString()[0]);
             }
             writer.WriteEndArray();
             
             writer.WritePropertyName("BlackCapturedPieces");
-            writer.WriteStartArray();
-            foreach (var pieceClone in value.BlackPlayer.capturedPieces.List)
-            {
-                serializer.Serialize(writer, pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString() + pieceClone.Color.ToChar());
-            }
-            writer.WriteEndArray();
+            SerializeCapturedPieces(writer, serializer, value.BlackPlayer);
+            
             writer.WritePropertyName("WhiteCapturedPieces");
-            writer.WriteStartArray();
-            foreach (var pieceClone in value.WhitePlayer.capturedPieces.List)
-            {
-                serializer.Serialize(writer, pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString() + pieceClone.Color.ToChar());
-            }
-            writer.WriteEndArray();
+            SerializeCapturedPieces(writer, serializer, value.WhitePlayer);
             
             writer.WritePropertyName(nameof(value.Move));
             serializer.Serialize(writer, value.Move);
@@ -49,34 +40,10 @@ namespace Net.Json
                 switch (name)
                 {
                     case "BlackCapturedPieces" :
-                        while (true)
-                        {
-                            reader.Read();
-                            var pieceStr = (string)reader.Value;
-                            if (string.IsNullOrEmpty(pieceStr)) break;
-                            
-                            var pieceType = PieceTypeEx.FromChar(pieceStr[0]);
-                            var color = pieceStr[2] == 'w' ? ChessColor.White : ChessColor.Black;
-                            var pieceClone = new PieceClone(color, pieceType);
-                            pieceClone.Count.Value = pieceStr[1] - '0';
-                            value.BlackPlayer.capturedPieces.Add(pieceClone);
-                        }
-                        reader.Read();
+                        AddCapturedPiecesToPlayer(value.BlackPlayer, reader);
                         break;
                     case "WhiteCapturedPieces" :
-                        while (true)
-                        {
-                            reader.Read();
-                            var pieceStr = (string)reader.Value;
-                            if (string.IsNullOrEmpty(pieceStr)) break;
-                            
-                            var pieceType = PieceTypeEx.FromChar(pieceStr[0]);
-                            var color = pieceStr[2] == 'w' ? ChessColor.White : ChessColor.Black;
-                            var pieceClone = new PieceClone(color, pieceType);
-                            pieceClone.Count.Value = pieceStr[1] - '0';
-                            value.WhitePlayer.capturedPieces.Add(pieceClone);
-                        }
-                        reader.Read();
+                        AddCapturedPiecesToPlayer(value.WhitePlayer, reader);
                         break;
                     case nameof(value.Move) :
                         value.Move = serializer.Deserialize<ChessColor>(reader);
@@ -92,12 +59,9 @@ namespace Net.Json
                             var color = pieceStr[0] == 'w' ? ChessColor.White : ChessColor.Black;
                             var pieceType = PieceTypeEx.FromChar(pieceStr[1]);
                             var square = value.GetSquareAt(pieceStr[2] + pieceStr[3].ToString());
-                            
-                            var piece = pieceType.GetNewPieceByType(value);
-                            piece.Color = color;
-                            piece.Square = square;
-                            square.Piece = piece;
-                            value.Pieces.Add(piece);
+                            var wasMoved = pieceStr[4] == 't';
+                            var piece = value.AddPiece(color, pieceType, square);
+                            piece.WasMoved = wasMoved;
                         }
                         reader.Read();
                         break;
@@ -108,13 +72,32 @@ namespace Net.Json
             }
             return value;
         }
-        private void AddArrayToList(ObservableList<PieceClone> playerPieces, ObservableList<PieceClone> deserializedPieces)
+
+        private static void AddCapturedPiecesToPlayer(Player player, JsonReader reader)
         {
-            foreach (var piece in deserializedPieces.List)
+            while (true)
             {
-                playerPieces.Add(piece);
+                reader.Read();
+                var pieceStr = (string)reader.Value;
+                if (string.IsNullOrEmpty(pieceStr)) break;
+                var pieceType = PieceTypeEx.FromChar(pieceStr[0]);
+                var color = pieceStr[2] == 'w' ? ChessColor.White : ChessColor.Black;
+                var pieceClone = new PieceClone(color, pieceType);
+                pieceClone.Count.Value = pieceStr[1] - '0';
+                player.capturedPieces.Add(pieceClone);
             }
+            reader.Read();
         }
-            
+
+        private static void SerializeCapturedPieces(JsonWriter writer, JsonSerializer serializer, Player player)
+        {
+            writer.WriteStartArray();
+            foreach (var pieceClone in player.capturedPieces.List)
+            {
+                serializer.Serialize(writer, pieceClone.PieceType.ToChar()  + pieceClone.Count.Value.ToString() + pieceClone.Color.ToChar());
+            }
+            writer.WriteEndArray();
+        }
+        
     }
 }

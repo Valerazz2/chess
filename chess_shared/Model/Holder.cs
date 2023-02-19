@@ -25,7 +25,8 @@ namespace chess_shared.Model
                     try
                     {
                         var oldValue = _value;
-                        ValueChanged?.Invoke(_value = value, oldValue);
+                        _value = value;
+                        ValueChanged?.Invoke(_value, oldValue);
                     }
                     finally
                     {
