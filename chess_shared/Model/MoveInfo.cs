@@ -5,6 +5,7 @@ namespace Chess.Model
         public ChessColor MoveColor;
         public Square MovedFrom;
         public Piece Piece;
+        public PieceClone CapturedPiece;
     }
 
     

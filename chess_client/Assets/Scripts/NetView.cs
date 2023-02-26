@@ -8,7 +8,7 @@ public class NetView : MonoBehaviour
 {
     [SerializeField] private GameObject startUi;
     [SerializeField] private DeskView deskView;
-    private ChessNetClient ChessNetClient;
+    public ChessNetClient ChessNetClient;
 
     public void JoinVsPlayer()
     {
@@ -22,7 +22,6 @@ public class NetView : MonoBehaviour
 
     private async void Join(GameMode gameMode)
     {
-        ChessNetClient = deskView.ChessNetClient;
         await ChessNetClient.Join(new JoinArgs()
         {
             GameMode = gameMode,

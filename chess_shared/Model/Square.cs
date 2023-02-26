@@ -8,7 +8,7 @@ namespace Chess.Model
     {
         public readonly Vector2Int Pos;
         public readonly ChessColor Color;
-        [JsonIgnore] public Piece Piece;
+        public Piece Piece;
         private bool _moveAble;
         private bool _marked;
         public Holder<bool> Marked = new();

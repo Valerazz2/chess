@@ -10,7 +10,7 @@ namespace Chess.Model
 
         public static Server Instance => _inst ??= new Server();
 
-        public readonly Dictionary<string, ServerPlayer> _dictionary = new();
+        private readonly Dictionary<string, ServerPlayer> playersId = new();
         
         private ServerPlayer? _waitingPlayer;
         
@@ -20,9 +20,9 @@ namespace Chess.Model
 
         private int GetGameCount()
         {
-            lock (_dictionary)
+            lock (playersId)
             {
-                return _dictionary.Count / 2;
+                return playersId.Count / 2;
             }
         }
 
@@ -39,9 +39,9 @@ namespace Chess.Model
                         var game = _waitingPlayer == null ? new ChessGame() : _waitingPlayer.game;
                         var color = _waitingPlayer == null ? ChessColor.White : ChessColor.Black;
                         var player = new ServerPlayer(game, color);
-                        lock (_dictionary)
+                        lock (playersId)
                         {
-                            _dictionary.Add(args.PlayerId, player);
+                            playersId.Add(args.PlayerId, player);
                         }
                         if (_waitingPlayer == null)
                         {
@@ -67,9 +67,9 @@ namespace Chess.Model
                     var gameWBot = new ChessGame();
                     var playerColor = ChessColor.White;
                     var realPlayer = new ServerPlayer(gameWBot, playerColor);
-                    lock (_dictionary)
+                    lock (playersId)
                     {
-                        _dictionary.Add(args.PlayerId, realPlayer);
+                        playersId.Add(args.PlayerId, realPlayer);
                     }
 
                     var chessServerBot = new ChessServerBot(gameWBot, ChessColor.Black);
@@ -110,9 +110,9 @@ namespace Chess.Model
         public ServerPlayer? FindPlayer(string sid)
         {
             ServerPlayer? player;
-            lock (_dictionary)
+            lock (playersId)
             {
-                _dictionary.TryGetValue(sid, out player);
+                playersId.TryGetValue(sid, out player);
             }
 
             return player;
@@ -138,9 +138,9 @@ namespace Chess.Model
         {
             lock (_joinLock)
             {
-                lock (_dictionary)
+                lock (playersId)
                 {
-                    _dictionary.Clear();
+                    playersId.Clear();
                 }
             
                 _waitingPlayer = null;    

@@ -14,33 +14,12 @@ public class DeskView : AbstractView<Desk>
     [SerializeField] private PieceView pieceViewPrefab;
     [SerializeField] private PlayerView player1View;
     [SerializeField] private PlayerView player2View;
-    [SerializeField] private NetView netView;
     public ChessNetClient ChessNetClient;
-    private Desk desk;
+    public Desk Desk;
 
-    private void Start()
+    public void Activate()
     {
-        desk = new Desk();
-        UnityPlayer.CheckOrSetGuid();
-        ChessNetClient = new ChessNetClient(desk, PlayerPrefs.GetString("PlayerId"));
-        desk.CreateMap();
-        var serializedDesk = PlayerPrefs.GetString("Desk");
-        if (!string.IsNullOrEmpty(serializedDesk))
-        {
-            desk.Clear();
-            var joinResult = PlayerPrefs.GetString("JoinResult");
-            ChessNetClient.joinResult = ChessJsonSerializer.Deserialize<JoinResult>(joinResult);
-            ChessJsonSerializer.Populate(serializedDesk, new DeskObj(desk));
-            netView.ConnectToGame();
-        }
         ChessNetClient.EnemyJoined += BuildMap;
-        desk.OnServerMove += SerializeDesk;
-    }
-
-    private void SerializeDesk(MoveInfo obj)
-    {
-        var serializedDesk = ChessJsonSerializer.SerializeObj(new DeskObj(model));
-        PlayerPrefs.SetString("Desk", serializedDesk);
     }
 
     protected override void OnBind()
@@ -67,7 +46,7 @@ public class DeskView : AbstractView<Desk>
     }
     public void BuildMap()
     {
-        Bind(desk);
+        Bind(Desk);
     }
 
     private void CreateView2(Piece piece)
@@ -78,5 +57,10 @@ public class DeskView : AbstractView<Desk>
     private void RotatePieces(float angle)
     {
         pieceViewPrefab.transform.rotation = new Quaternion(0,0,angle,0);
+    }
+
+    private void BackMove()
+    {
+        
     }
 }

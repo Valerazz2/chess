@@ -11,5 +11,6 @@ namespace Chess.Model
          Desk = new Desk();
          Desk.CreateMap();
       }
+      
    }
 }

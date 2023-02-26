@@ -59,7 +59,7 @@ namespace Net.Json
                             var color = pieceStr[0] == 'w' ? ChessColor.White : ChessColor.Black;
                             var pieceType = PieceTypeEx.FromChar(pieceStr[1]);
                             var square = value.GetSquareAt(pieceStr[2] + pieceStr[3].ToString());
-                            var wasMoved = pieceStr[4] == 't';
+                            var wasMoved = pieceStr[4] == 'T';
                             var piece = value.AddPiece(color, pieceType, square);
                             piece.WasMoved = wasMoved;
                         }

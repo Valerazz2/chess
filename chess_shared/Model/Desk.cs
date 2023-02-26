@@ -18,9 +18,10 @@ namespace Chess.Model
         
         public Piece CurrentPiece { get; set; }
 
-        private ChessState ChessState = ChessState.PieceNull;
+        private List<CommandMove> moves = new();
 
-        public event Action<MoveInfo> OnMove;
+        private ChessState ChessState = ChessState.PieceNull;
+        
         public event Action<MoveInfo> OnServerMove;
         public event Action<Piece> OnPieceCaptured;
         
@@ -29,6 +30,8 @@ namespace Chess.Model
         [JsonIgnore] public MoveInfo prevMove = new();
 
         public ObservableList<Piece> Pieces = new();
+
+        private int undoDeep = 1;
 
         public void Clear()
         {
@@ -103,11 +106,12 @@ namespace Chess.Model
                 var rook = FindFirstFigureByStep(target, piece);
                 MoveRookWhenCastling(rook, piece);
             }
-            
-            if (target.Piece != null)
+
+            var targetPiece = target.Piece;
+            if (targetPiece != null)
             {
-                OnPieceCaptured?.Invoke(target.Piece);
-                Pieces.Remove(target.Piece);
+                OnPieceCaptured?.Invoke(targetPiece);
+                Pieces.Remove(targetPiece);
             }
 
             var eventInfo = new MoveInfo
@@ -115,6 +119,7 @@ namespace Chess.Model
                 MoveColor = Move.Invert(),
                 Piece = piece,
                 MovedFrom = piece.Square,
+                CapturedPiece = targetPiece != null ? new PieceClone(targetPiece.Color, targetPiece.GetPieceType()) : null
             };
             
             piece.MoveTo(target);
@@ -130,8 +135,7 @@ namespace Chess.Model
             piece.Square.Marked.Value = true;
             
             OnServerMove?.Invoke(eventInfo);
-            OnMove?.Invoke(eventInfo);
-            
+
             if (wantTakeOnThePass)
             {
                 OnTakeOnThePass(eventInfo.MovedFrom, piece);
@@ -217,7 +221,6 @@ namespace Chess.Model
                 MovedFrom = rook.Square,
             };
             rook.MoveToWithOutChecking(Squares[rookPos.X, rookPos.Y]);
-            OnMove?.Invoke(moveInfo);
         }
         
         public Piece GetPieceAt(Vector2Int pos)

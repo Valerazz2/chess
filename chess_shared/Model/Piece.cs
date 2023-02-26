@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using chess_shared.Model;
 using Newtonsoft.Json;
 
 
@@ -9,12 +10,19 @@ namespace Chess.Model
     {
         public bool WasMoved;
         public ChessColor Color;
-        public Square Square;
+        public Holder<Square> SquareHolder = new();
+
+        public Square Square
+        {
+            get => SquareHolder.Value;
+            set => SquareHolder.Value = value;
+        }
 
         protected Piece(Desk getDesk) : base(getDesk) {}
 
         public bool TryMoveSuccess(Square target)
         {
+            SquareHolder.EventsCall = false;
             var targetPiece = target.Piece;
             var oldSquare = Square;
         
@@ -26,24 +34,24 @@ namespace Chess.Model
             MoveToWithOutChecking(oldSquare);
             
             target.Piece = targetPiece;
-            
+            SquareHolder.EventsCall = true;
             return !isCheck;
         }
 
         public void MoveToWithOutChecking(Square target)
         {
-            Square.Piece = null;
+            SquareHolder.Value.Piece = null;
             target.Piece = this;
-            Square = target;
+            SquareHolder.Value = target;
         }
         public void MoveTo(Square target)
         {
             if (AbleMoveTo(target) && TryMoveSuccess(target))
             {
                 WasMoved = true;
-                Square.Piece = null;
+                SquareHolder.Value.Piece = null;
                 target.Piece = this;
-                Square = target;
+                SquareHolder.Value = target;
                 return;
             }
             throw new Exception("Loshara");
@@ -70,8 +78,8 @@ namespace Chess.Model
 
         protected bool CheckTiles(Square target)
         {
-            var step = Square.Pos.GetStep(target.Pos);
-            for (var pos = Square.Pos + step; pos != target.Pos; pos += step)
+            var step = SquareHolder.Value.Pos.GetStep(target.Pos);
+            for (var pos = SquareHolder.Value.Pos + step; pos != target.Pos; pos += step)
             {
                 if (Desk.GetPieceAt(pos) != null)
                 {
@@ -82,7 +90,7 @@ namespace Chess.Model
         }
         public bool ReachedLastSquare()
         {
-            return (Square.Pos.Y == 0 || Square.Pos.Y == Desk.DeskSizeY - 1) && GetPieceType() == PieceType.Pawn ;
+            return (SquareHolder.Value.Pos.Y == 0 || SquareHolder.Value.Pos.Y == Desk.DeskSizeY - 1) && GetPieceType() == PieceType.Pawn ;
         }
     }
 }

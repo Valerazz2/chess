@@ -9,6 +9,8 @@ namespace chess_shared.Model
 
         private bool _isSetting;
 
+        public bool EventsCall = true;
+
         public T Value
         {
             get => _value;
@@ -26,7 +28,7 @@ namespace chess_shared.Model
                     {
                         var oldValue = _value;
                         _value = value;
-                        ValueChanged?.Invoke(_value, oldValue);
+                        if (EventsCall) ValueChanged?.Invoke(_value, oldValue);
                     }
                     finally
                     {
