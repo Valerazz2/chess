@@ -17,6 +17,7 @@ namespace Model
         {
             CommandMove commandMove = new()
             {
+                MoveType = moveInfo.MoveType,
                 MovedFrom = moveInfo.MovedFrom,
                 MovedTo = moveInfo.Piece.Square,
                 CapturedPiece = moveInfo.CapturedPiece

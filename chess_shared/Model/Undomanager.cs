@@ -12,10 +12,9 @@ namespace Common.Util.Undo
         public int cursor;
 
         public readonly Holder<bool> undoAvailable = new();
-        // public bool IsUndoAvailable => cursor > 0 && CurrentCommand == null;
-        public bool IsUndoAvailable => cursor > 0;
-        
-        public bool IsRedoAvailable => cursor < Size;
+         public bool IsUndoAvailable => cursor > 0 && CurrentCommand == null;
+
+         public bool IsRedoAvailable => cursor < Size && CurrentCommand == null;
         
         public readonly Holder<bool> redoAvailable = new();
         
@@ -34,6 +33,12 @@ namespace Common.Util.Undo
         {
             undoAvailable.Value = IsUndoAvailable;
             redoAvailable.Value = IsRedoAvailable;
+        }
+        
+        private void OnComplete()
+        {
+            CurrentCommand = null;
+            Update();
         }
 
         public void AddCommand(IUndoableCommand cmd, bool apply = true)
@@ -56,6 +61,7 @@ namespace Common.Util.Undo
             cursor--;
             Update();
             CurrentCommand.Revert();
+            OnComplete();
         }
         
         public void Redo()
@@ -64,6 +70,7 @@ namespace Common.Util.Undo
             cursor++;
             Update();
             CurrentCommand.Apply();
+            OnComplete();
         }
     }
 

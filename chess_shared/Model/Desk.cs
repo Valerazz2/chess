@@ -94,15 +94,22 @@ namespace Chess.Model
             {
                 return;
             }
+
+            var moveType = MoveType.DefaultMove;
             
             piece.Square.Marked.Value = true;
             var wantTakeOnThePass = piece.GetPieceType() == PieceType.Pawn &&
                                     Math.Abs(piece.Square.Pos.X - target.Pos.X) == 1 && target.Piece == null;
+            if (wantTakeOnThePass)
+            {
+                moveType = MoveType.TakeOnPass;
+            }
 
             Move = Move.Invert();
             
             if (WantCastling(target, piece))
             {
+                moveType = MoveType.Castle;
                 var rook = FindFirstFigureByStep(target, piece);
                 MoveRookWhenCastling(rook, piece);
             }
@@ -114,21 +121,26 @@ namespace Chess.Model
                 Pieces.Remove(targetPiece);
             }
 
-            var eventInfo = new MoveInfo
-            {
-                MoveColor = Move.Invert(),
-                Piece = piece,
-                MovedFrom = piece.Square,
-                CapturedPiece = targetPiece != null ? new PieceClone(targetPiece.Color, targetPiece.GetPieceType()) : null
-            };
+            var movedFrom = piece.Square;
+            
             
             piece.MoveTo(target);
 
             if (piece.GetPieceType() == PieceType.Pawn && piece.ReachedLastSquare())
             {
+                moveType = MoveType.Queening;
                 AddPiece(piece.Color, PieceType.Queen, piece.Square);
                 Pieces.Remove(piece);
             }
+            
+            var eventInfo = new MoveInfo
+            {
+                MoveType = moveType,
+                MoveColor = Move.Invert(),
+                Piece = piece,
+                MovedFrom = movedFrom,
+                CapturedPiece = targetPiece != null ? new PieceClone(targetPiece.Color, targetPiece.GetPieceType()) : null
+            };
             
             prevMove.MovedFrom = eventInfo.MovedFrom;
             prevMove.Piece = piece;
