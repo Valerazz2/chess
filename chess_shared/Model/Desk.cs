@@ -77,6 +77,12 @@ namespace Chess.Model
             BlackPlayer = new Player(ChessColor.Black, this);
         }
 
+        public void RemovePiece(Piece piece)
+        {
+            piece.Square.Piece = null;
+            Pieces.Remove(piece);
+        }
+        
         public Piece AddPiece(ChessColor color, PieceType type, Square square)
         {
             var piece = type.GetNewPieceByType(this);
@@ -154,7 +160,7 @@ namespace Chess.Model
             }
         }
 
-        private bool WantCastling(Square target, Piece piece)
+        public bool WantCastling(Square target, Piece piece)
         {
             return piece.GetPieceType() == PieceType.King &&
                    Vector2Int.Distance(piece.Square.Pos, target.Pos) == new Vector2Int(2, 0);
@@ -223,7 +229,7 @@ namespace Chess.Model
         }
 
 
-        private void MoveRookWhenCastling(Piece rook, Piece king)
+        public void MoveRookWhenCastling(Piece rook, Piece king)
         {
             var offset = king.Square.Pos.GetStep(rook.Square.Pos);
             var rookPos = king.Square.Pos + offset;

@@ -13,25 +13,38 @@ namespace Model
         private Desk desk => MovedFrom.Desk;
         public void Apply()
         {
+            var piece = MovedFrom.Piece;
             switch (MoveType)
             {
                 case MoveType.Castle:
-                    break;
+                    var rook = desk.FindFirstFigureByStep(MovedTo, piece);
+                    desk.MoveRookWhenCastling(rook, piece);
+                    piece.MoveToWithOutChecking(MovedTo);
+                        break;
                 case MoveType.Queening:
+                    if (MovedTo.Piece != null)
+                    {
+                        desk.RemovePiece(MovedTo.Piece);
+                    }
+                    desk.AddPiece(piece.Color, PieceType.Queen, MovedTo);
+                    desk.Pieces.Remove(piece);
                     break;
                 case MoveType.TakeOnPass:
+                    piece.MoveToWithOutChecking(MovedTo);
+                    var deltaX = MovedTo.Pos.X - MovedFrom.Pos.X;
+                    var capturedPiece = desk.GetPieceAt(MovedFrom.Pos + new Vector2Int(deltaX, 0));
+                    desk.RemovePiece(capturedPiece);
                     break;
                 case MoveType.DefaultMove:
+                    if (MovedTo.Piece != null)
+                    {
+                        desk.RemovePiece(MovedTo.Piece);
+                    }
+                    piece.MoveToWithOutChecking(MovedTo);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            var piece = MovedFrom.Piece;
-            if (MovedTo.Piece != null)
-            {
-                desk.Pieces.Remove(MovedTo.Piece);
-            }
-            piece.MoveToWithOutChecking(MovedTo);
         }
 
         public void Revert()
@@ -49,9 +62,8 @@ namespace Model
                     rook.MoveToWithOutChecking(square);
                     break;
                 case MoveType.Queening:
-                    var backDir = piece.Square.Pos.Y == 7 ? -1 : 1;
                     desk.AddPiece(piece.Color, PieceType.Pawn, MovedFrom);
-                    desk.Pieces.Remove(piece);
+                    desk.RemovePiece(piece);
                     if (CapturedPiece != null)
                     {
                         desk.AddPiece(CapturedPiece.Color, CapturedPiece.PieceType, MovedTo);
@@ -59,8 +71,8 @@ namespace Model
                     break;
                 case MoveType.TakeOnPass:
                     piece.MoveToWithOutChecking(MovedFrom);
-                    var deltaY = MovedFrom.Pos.X - MovedTo.Pos.X;
-                    var square2 = desk.GetSquareAt(MovedTo.Pos + new Vector2Int(0, deltaY));
+                    var dirX = MovedTo.Pos.X - MovedFrom.Pos.X;
+                    var square2 = desk.GetSquareAt(MovedFrom.Pos + new Vector2Int(dirX, 0));
                     desk.AddPiece(piece.Color.Invert(), PieceType.Pawn, square2);
                     break;
                 case MoveType.DefaultMove:
