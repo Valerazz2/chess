@@ -54,7 +54,7 @@ namespace Model
             {
                 
                 case MoveType.Castle:
-                    var deltaX = (MovedTo.Pos.X - MovedFrom.Pos.X) / 2;
+                    var deltaX = Math.Sign(MovedTo.Pos.X - MovedFrom.Pos.X);
                     var rook = desk.GetPieceAt(MovedTo.Pos - new Vector2Int(deltaX, 0));
                     piece.MoveToWithOutChecking(MovedFrom);
                     var posX = rook.Square.Pos.X <= 3 ? 0 : 7;
